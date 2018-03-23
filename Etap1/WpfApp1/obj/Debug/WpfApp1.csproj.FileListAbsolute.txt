@@ -1,0 +1,60 @@
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe.config
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.pdb
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csprojResolveAssemblyReference.cache
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\MainWindow.g.cs
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\App.g.cs
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.cache
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.lref
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\MainWindow.baml
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.g.resources
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.Properties.Resources.resources
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.GenerateResource.Cache
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.CoreCompileInputs.cache
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.exe
+D:\Cyfrowe Przetwarzanie Sygnału\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.pdb
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe.config
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.pdb
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csprojResolveAssemblyReference.cache
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\MainWindow.g.cs
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\App.g.cs
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.cache
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.lref
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\MainWindow.baml
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.g.resources
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.Properties.Resources.resources
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.GenerateResource.Cache
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.CoreCompileInputs.cache
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.exe
+C:\Users\USER\Desktop\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.pdb
+D:\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe.config
+D:\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe
+D:\Etap1\WpfApp1\WpfApp1\bin\Debug\WpfApp1.pdb
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csprojResolveAssemblyReference.cache
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\MainWindow.g.cs
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\App.g.cs
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.cache
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.lref
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\MainWindow.baml
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.g.resources
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.Properties.Resources.resources
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.GenerateResource.Cache
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.CoreCompileInputs.cache
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.exe
+D:\Etap1\WpfApp1\WpfApp1\obj\Debug\WpfApp1.pdb
+D:\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe.config
+D:\WpfApp1\WpfApp1\bin\Debug\WpfApp1.exe
+D:\WpfApp1\WpfApp1\bin\Debug\WpfApp1.pdb
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csprojResolveAssemblyReference.cache
+D:\WpfApp1\WpfApp1\obj\Debug\MainWindow.g.cs
+D:\WpfApp1\WpfApp1\obj\Debug\App.g.cs
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.cache
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.lref
+D:\WpfApp1\WpfApp1\obj\Debug\MainWindow.baml
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1.g.resources
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1.Properties.Resources.resources
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.GenerateResource.cache
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1.csproj.CoreCompileInputs.cache
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1.exe
+D:\WpfApp1\WpfApp1\obj\Debug\WpfApp1.pdb
