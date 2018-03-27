@@ -4,12 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
+      
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="470" Width="540">
+    <Window.Resources>
+        <local:Konwerter x:Key="Konwerter"/>
+        <ObjectDataProvider x:Key="dataFromEnum" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+               
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <Grid>
         <Button x:Name="Load" Content="Zapisz do pliku" Command="{Binding Load_Diagram}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="104"/>
         <ComboBox HorizontalAlignment="Left" Height="20" SelectedItem="{Binding Path=WybranaFunkcja}" Margin="119,10,0,0" VerticalAlignment="Top" Width="290">
-            <ComboBoxItem>Sygnal o rozkładzie jednostajnym</ComboBoxItem>
+            <ComboBoxItem >Sygnal o rozkładzie jednostajnym</ComboBoxItem>
             <ComboBoxItem>Szum gaussowski</ComboBoxItem>
             <ComboBoxItem>Sygnal sinusodalny</ComboBoxItem>
             <ComboBoxItem>Sygnal sinusoidalny wyprostowany jednopolowkowo</ComboBoxItem>
@@ -21,46 +32,48 @@
             <ComboBoxItem>Impuls jednostkowy</ComboBoxItem>
             <ComboBoxItem>Szum impulsowy</ComboBoxItem>
         </ComboBox>
-        <TextBox Name="A" Text="{Binding A}" HorizontalAlignment="Left" Height="23" Margin="10,35,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="przedzial" Text="{Binding Przedzial}" HorizontalAlignment="Left" Height="24" Margin="84,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="T" Text="{Binding T}" HorizontalAlignment="Left" Height="23" Margin="10,63,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="czasPoczatkowy" Text="{Binding t1}" HorizontalAlignment="Left" Height="23" Margin="84,70,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="d" Text="{Binding d}" HorizontalAlignment="Left" Height="23" Margin="10,96,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="ts" Text="{Binding ts}" HorizontalAlignment="Left" Height="23" Margin="10,127,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="czestotliwosc" Text="{Binding f}" HorizontalAlignment="Left" Height="23" Margin="84,99,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="p" Text="{Binding p}" HorizontalAlignment="Left" Height="23" Margin="10,158,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox x:Name="kw" Text="{Binding kw}" HorizontalAlignment="Left" Height="23" Margin="10,186,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox x:Name="n1" Text="{Binding n1}" HorizontalAlignment="Left" Height="23" Margin="10,214,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox x:Name="ns" Text="{Binding ns}" HorizontalAlignment="Left" Height="23" Margin="10,242,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="30"/>
-        <TextBox Name="CzyRzeczywista" Text="{Binding CzyRzeczywista}" HorizontalAlignment="Left" Height="23" Margin="84,127,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="30"/>
-        <Label Content="A" HorizontalAlignment="Left" Margin="45,35,0,0" VerticalAlignment="Top"/>
-        <Label Content="T" HorizontalAlignment="Left" Margin="45,63,0,0" VerticalAlignment="Top"/>
-        <Label Content="ts" HorizontalAlignment="Left" Margin="46,127,0,0" VerticalAlignment="Top"/>
-        <Label Content="d" HorizontalAlignment="Left" Margin="46,96,0,0" VerticalAlignment="Top"/>
-        <Label Content="czas początkowy [s]" HorizontalAlignment="Left" Margin="119,67,0,0" VerticalAlignment="Top"/>
-        <Label Content="częstotliwość próbkowania [kHz]" HorizontalAlignment="Left" Margin="121,99,0,0" VerticalAlignment="Top" Width="185"/>
-        <Label Content="p" HorizontalAlignment="Left" Margin="48,158,0,0" VerticalAlignment="Top"/>
-        <Label Content="kw" HorizontalAlignment="Left" Margin="45,186,0,0" VerticalAlignment="Top"/>
-        <Label Content="n1" HorizontalAlignment="Left" Margin="45,214,0,0" VerticalAlignment="Top"/>
-        <Label Content="ns" HorizontalAlignment="Left" Margin="45,240,0,0" VerticalAlignment="Top"/>
-        <Label Content="histogram przedział &lt;5,20&gt;" HorizontalAlignment="Left" Margin="119,37,0,0" VerticalAlignment="Top" Height="28"/>
-        <Button Content="Dodaj sygnaly" Command="{Binding DodajSygnal}" HorizontalAlignment="Left" Margin="145,290,0,0" VerticalAlignment="Top" Width="81" />
-        <Button Content="Odejmij" Command="{Binding OdejmijSygnal}" HorizontalAlignment="Left" Margin="231,290,0,0" VerticalAlignment="Top" Width="75" />
-        <Button Content="Pomnoz" Command="{Binding PomnozSygnal}" HorizontalAlignment="Left" Margin="311,290,0,0" VerticalAlignment="Top" Width="75"/>
-        <Button Content="Podziel" Command="{Binding PodzielSygnal}" HorizontalAlignment="Left" Margin="391,290,0,0" VerticalAlignment="Top" Width="75"/>
+        <TextBox Name="A" Text="{Binding A}" Visibility="{Binding VisibilityA,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,97,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="104"/>
+        <TextBox Name="przedzial" Text="{Binding Przedzial}" HorizontalAlignment="Left" Height="24" Margin="11,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="103"/>
+        <TextBox Name="T" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Text="{Binding T, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,125,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="104"/>
+        <TextBox Name="czasPoczatkowy" Text="{Binding t1}" Visibility="{Binding Visibilityt1,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,181,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="104"/>
+        <TextBox Name="d" Text="{Binding d}" Visibility="{Binding Visibilityd,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,153,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="104"/>
+        <TextBox Name="ts" Text="{Binding ts}" Visibility="{Binding Visibilityts,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,265,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="103" RenderTransformOrigin="0.5,-0.203"/>
+        <TextBox Name="czestotliwosc" Text="{Binding f}" Visibility="{Binding VisibilityczP,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="11,349,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="102"/>
+        <TextBox Name="p" Text="{Binding p}" Visibility="{Binding Visibilityp,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="11,377,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="102"/>
+        <TextBox x:Name="kw" Text="{Binding kw}" Visibility="{Binding Visibilitykw,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="11,237,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="102"/>
+        <TextBox x:Name="n1" Text="{Binding n1}" Visibility="{Binding Visibilityn1,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="10,293,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="103"/>
+        <TextBox x:Name="ns" Text="{Binding ns}" Visibility="{Binding Visibilityns,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="11,321,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="102"/>
+        <TextBox Name="CzyRzeczywista" Text="{Binding CzyRzeczywista}" HorizontalAlignment="Left" Height="23" Margin="11,68,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
+        <Label Visibility="{Binding VisibilityA,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Content="amplituda (A)" HorizontalAlignment="Left" Margin="119,97,0,0" VerticalAlignment="Top"/>
+        <Label Content="okres (T)" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,125,0,0" VerticalAlignment="Top"/>
+        <Label Content="czas wykonania skoku (ts)" Visibility="{Binding Visibilityts,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,265,0,0" VerticalAlignment="Top"/>
+        <Label Content="czas trwania sygnału (d)" Visibility="{Binding Visibilityd,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,153,0,0" VerticalAlignment="Top"/>
+        <Label Content="czas początkowy (t1)" Visibility="{Binding Visibilityt1,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,181,0,0" VerticalAlignment="Top"/>
+        <Label Content="częstotliwość próbkowania (f)" Visibility="{Binding VisibilityczP,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="118,349,0,0" VerticalAlignment="Top" Width="185"/>
+        <Label Content="prawdopodobieństwo (p)" Visibility="{Binding Visibilityp,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,377,0,0" VerticalAlignment="Top"/>
+        <Label Content="współczynnik wypełnienia (kw)" Visibility="{Binding Visibilitykw,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,237,0,0" VerticalAlignment="Top"/>
+        <Label Content="numer pierwszej probówki (n1)" Visibility="{Binding Visibilityn1,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,293,0,0" VerticalAlignment="Top"/>
+        <Label Content="numer próbki, dla której następuje skok amplitudy (ns)" Visibility="{Binding Visibilityns,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,321,0,0" VerticalAlignment="Top"/>
+        <Label Content="histogram przedział &lt;5,20&gt;" HorizontalAlignment="Left" Margin="118,37,0,0" VerticalAlignment="Top" Height="28"/>
+        <Button Content="Dodaj sygnaly" Command="{Binding DodajSygnal}" HorizontalAlignment="Left" Margin="10,405,0,0" VerticalAlignment="Top" Width="81" Click="Button_Click" />
+        <Button Content="Odejmij" Command="{Binding OdejmijSygnal}" HorizontalAlignment="Left" Margin="95,405,0,0" VerticalAlignment="Top" Width="75" />
+        <Button Content="Pomnoz" Command="{Binding PomnozSygnal}" HorizontalAlignment="Left" Margin="175,405,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button Content="Podziel" Command="{Binding PodzielSygnal}" HorizontalAlignment="Left" Margin="255,405,0,0" VerticalAlignment="Top" Width="75"/>
         <!--<Button Content="Dyskretyzacja" Command="{Binding DyskretyzacjaSygnalu}" HorizontalAlignment="Left" Margin="56,289,0,0" VerticalAlignment="Top" Width="84"/>-->
-        <Label Content="czy liczba rzeczywista" HorizontalAlignment="Left" Margin="119,125,0,0" VerticalAlignment="Top"/>
+        <Label Content="czy liczba rzeczywista (true/false)" HorizontalAlignment="Left" Margin="119,68,0,0" VerticalAlignment="Top"/>
         <Button Content="Rysuj" Command="{Binding RysujFunkcje}" HorizontalAlignment="Left" Margin="414,10,0,0" VerticalAlignment="Top" Width="75"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="354,58,0,0" TextWrapping="Wrap" Text="{Binding WartoscSrednia, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="354,107,0,0" TextWrapping="Wrap" Text="{Binding WartoscSredniaBezwzgledna, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="354,158,0,0" TextWrapping="Wrap" Text="{Binding MocSrednia, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <TextBox HorizontalAlignment="Left" Height="23" Margin="354,212,0,0" TextWrapping="Wrap" Text="{Binding Wariacja, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="354,262,0,0" TextWrapping="Wrap" Text="{Binding WartoscSkuteczna, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="354,257,0,0" TextWrapping="Wrap" Text="{Binding WartoscSkuteczna, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120"/>
         <Label Content="wartość średnia" HorizontalAlignment="Left" Margin="354,32,0,0" VerticalAlignment="Top"/>
         <Label Content="wartość średnia bezwzględna" HorizontalAlignment="Left" Margin="350,81,0,0" VerticalAlignment="Top"/>
         <Label Content="moc średnia" HorizontalAlignment="Left" Margin="350,127,0,0" VerticalAlignment="Top"/>
         <Label Content="wariacja sygnalu" HorizontalAlignment="Left" Margin="350,181,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.49,0.385"/>
-        <Label Content="wartość skuteczna" HorizontalAlignment="Left" Margin="354,240,0,0" VerticalAlignment="Top"/>
+        <Label Content="wartość skuteczna" HorizontalAlignment="Left" Margin="354,235,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Visibility="{Binding Visibilityf,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="10,209,0,0" TextWrapping="Wrap" Text="{Binding T,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Konwerter}}" VerticalAlignment="Top" Width="104"/>
+        <Label Content="częstotliwość (f)" Visibility="{Binding Visibilityf,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="119,209,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

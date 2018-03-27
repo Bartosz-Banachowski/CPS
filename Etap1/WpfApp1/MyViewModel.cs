@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -27,6 +28,7 @@ namespace WpfApp1
             funkcjaHistogram = new List<Funkcja>();
         }
         #endregion
+
         #region ICommands
         public ICommand Load_Diagram { get; }
         public ICommand Load_Histogram { get; }
@@ -37,14 +39,17 @@ namespace WpfApp1
         public ICommand DyskretyzacjaSygnalu { get; }
         public ICommand RysujFunkcje { get; }
         #endregion
+
         #region private
         
        private List<Funkcja> funkcjaHistogram;
         private List<Funkcja> funkcja;
-        private GeneratorSygnalow generator;
+      //  private GeneratorSygnalow generator;
         private string _wybranaFunkcja;
         private string _A, _T, _t1="0", _d, _ts, _f="0,01", _p, _kw, _n1, _ns, _przedzial="5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna;
+        private Visibility visibilityA = Visibility.Hidden, visibilityT = Visibility.Hidden, visibilityd = Visibility.Hidden, visibilityt1 = Visibility.Hidden, visibilityf = Visibility.Hidden, visibilitykw = Visibility.Hidden, visibilityts = Visibility.Hidden, visibilityn1 = Visibility.Hidden, visibilityns = Visibility.Hidden, visibilityczP = Visibility.Hidden, visibilityp = Visibility.Hidden;
         #endregion
+
         public event PropertyChangedEventHandler PropertyChanged;
         private void RaisePropertyChanged(string propertyName_)
         {
@@ -62,11 +67,17 @@ namespace WpfApp1
         int ilePrzedzialow;
         string wyborFunkcji;
         Funkcja fun;
+
         #region properties
+  
         public string WybranaFunkcja
         {
             get { return _wybranaFunkcja; }
-            set { this._wybranaFunkcja = value; }
+            set { this._wybranaFunkcja = value;
+                HideVisibility();
+                wyborFunkcji = _wybranaFunkcja.Substring(38, _wybranaFunkcja.Length - 38);
+                Choise(wyborFunkcji);
+            }
         }
         public string Przedzial
         {
@@ -88,7 +99,9 @@ namespace WpfApp1
         public string T
         {
             get { return _T; }
-            set { this._T = value; }
+            set { this._T = value;
+                RaisePropertyChanged("T");
+            }
         }
         public string t1
         {
@@ -165,21 +178,32 @@ namespace WpfApp1
                 RaisePropertyChanged("WartoscSkuteczna");   }
         }
 
+        public Visibility VisibilityA { get => visibilityA; set => visibilityA = value; }
+        public Visibility VisibilityT { get => visibilityT; set => visibilityT = value; }
+        public Visibility Visibilityd { get => visibilityd; set => visibilityd = value; }
+        public Visibility Visibilityt1 { get => visibilityt1; set => visibilityt1 = value; }
+        public Visibility Visibilityf { get => visibilityf; set => visibilityf = value; }
+        public Visibility Visibilitykw { get => visibilitykw; set => visibilitykw = value; }
+        public Visibility Visibilityts { get => visibilityts; set => visibilityts = value; }
+        public Visibility Visibilityn1 { get => visibilityn1; set => visibilityn1 = value; }
+        public Visibility Visibilityns { get => visibilityns; set => visibilityns = value; }
+        public Visibility VisibilityczP { get => visibilityczP; set => visibilityczP = value; }
+        public Visibility Visibilityp { get => visibilityp; set => visibilityp = value; }
+
         #endregion
 
         private void InitializeGnuplot()
         {
             plotProcess = new Process();
-            plotProcess.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
+            plotProcess.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
             plotProcess.StartInfo.UseShellExecute = false;
             plotProcess.StartInfo.RedirectStandardInput = true;
             plotProcess.Start();
+
             plot = new Process();
-          //  string p2 = plot.ProcessName;
-            plot.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
+            plot.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
             plot.StartInfo.UseShellExecute = false;
             plot.StartInfo.RedirectStandardInput = true;
-            
             plot.Start();
         }
         private void Browse()
@@ -214,21 +238,47 @@ namespace WpfApp1
         private void ZapiszWykresDoPliku()
         {
             wyborFunkcji = WybranaFunkcja.Substring(38, WybranaFunkcja.Length - 38);
-            generator = new GeneratorSygnalow();
-            funkcja.Add(StworzFunkcje(wyborFunkcji, generator));
+
+            // generator = new GeneratorSygnalow();
+            funkcja.Add(StworzFunkcje(wyborFunkcji));
             SaveFile();
-            generator.ZapiszDoPlikuWlasciwosci(funkcja.Last(), saveFilePathWykres);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcja.Last(), saveFilePathWykres);
+            sw = plotProcess.StandardInput;
+            String gnuplot;
+            if (wyborFunkcji == "Szum impulsowy" || wyborFunkcji == "Impuls jednostkowy")
+            {
+                gnuplot = "set decimalsign locale\n" +
+                   "plot \"" + saveFilePathWykres + "\" using 1:2";
+            }
+            else
+            {
+                gnuplot = "set decimalsign locale\n" +
+                    "set ylabel \"A\"\n" +
+                    "set xlabel \"t[s]\"\n" +
+             "plot \"" + saveFilePathWykres + "\" using 1:2 with lines";
+            }
+            fun = GeneratorSygnalow.WczytajZPlikuWlasciwosci(saveFilePathWykres);
+            WartoscSrednia = fun.ObliczWartoscSrednia().ToString();
+            WartoscSredniaBezwzgledna = fun.ObliczWartoscSredniaBezwzgledna().ToString();
+            MocSrednia = fun.ObliczMocSredniaSygnalu().ToString();
+            Wariacja = fun.ObliczWariancje().ToString();
+            WartoscSkuteczna = fun.ObliczWartoscSkuteczna().ToString();
+            sw.WriteLine(gnuplot);
+            sw.Flush();
+            Histogram(saveFilePathWykres);
         }
 
         private void Rysuj()
         {
-            generator = new GeneratorSygnalow();
+            
             Browse();
             sw = plotProcess.StandardInput;
             String gnuplot;
             if (wyborFunkcji == "Szum impulsowy" || wyborFunkcji == "Impuls jednostkowy")
             {
                 gnuplot = "set decimalsign locale\n" +
+                     "set ylabel \"A\"\n" +
+                    "set xlabel \"t[s]\"\n" +
                    "plot \"" + openFilePathWykres + "\" using 1:2";
             }
             else
@@ -238,7 +288,7 @@ namespace WpfApp1
                     "set xlabel \"t[s]\"\n" +
              "plot \"" + openFilePathWykres + "\" using 1:2 with lines";
             }
-            fun = generator.WczytajZPlikuWlasciwosci(openFilePathWykres);
+            fun = GeneratorSygnalow.WczytajZPlikuWlasciwosci(openFilePathWykres);
             WartoscSrednia = fun.ObliczWartoscSrednia().ToString();
             WartoscSredniaBezwzgledna = fun.ObliczWartoscSredniaBezwzgledna().ToString();
             MocSrednia = fun.ObliczMocSredniaSygnalu().ToString();
@@ -252,8 +302,8 @@ namespace WpfApp1
         private void Histogram(string path)
         {
             ilePrzedzialow =  Int16.Parse(Przedzial);
-            generator = new GeneratorSygnalow();
-            funkcjaHistogram.Add(generator.WczytajZPlikuWlasciwosci(path));
+          
+            funkcjaHistogram.Add(GeneratorSygnalow.WczytajZPlikuWlasciwosci(path));
             SortedDictionary<int, int> histogram = new SortedDictionary<int, int>();
         
             Punkt min = funkcjaHistogram.Last().Punkty.Min();
@@ -298,16 +348,16 @@ namespace WpfApp1
 
         public void Dodaj()
         {
-            generator = new GeneratorSygnalow();
+           
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
             string[] funkcjaPath = openFileDialog.SafeFileNames;
-            Funkcja f1 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
-            Funkcja f2 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja suma = generator.Dodaj(f1, f2);
-            generator.ZapiszDoPlikuWlasciwosci(suma, saveSumaPath);
+            Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
+            Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
+            Funkcja suma = GeneratorSygnalow.Dodaj(f1, f2);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(suma, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
             sw = plotProcess.StandardInput;
@@ -318,16 +368,15 @@ namespace WpfApp1
 
         public void Odejmij()
         {
-            generator = new GeneratorSygnalow();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
             string[] funkcjaPath = openFileDialog.SafeFileNames;
-            Funkcja f1 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
-            Funkcja f2 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja roznica = generator.Odejmij(f1, f2);
-            generator.ZapiszDoPlikuWlasciwosci(roznica, saveSumaPath);
+            Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
+            Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
+            Funkcja roznica = GeneratorSygnalow.Odejmij(f1, f2);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(roznica, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
             sw = plotProcess.StandardInput;
@@ -338,16 +387,15 @@ namespace WpfApp1
 
         public void Pomnoz()
         {
-            generator = new GeneratorSygnalow();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
             string[] funkcjaPath = openFileDialog.SafeFileNames;
-            Funkcja f1 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
-            Funkcja f2 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja mnozenie = generator.Pomnoz(f1, f2);
-            generator.ZapiszDoPlikuWlasciwosci(mnozenie, saveSumaPath);
+            Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
+            Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
+            Funkcja mnozenie = GeneratorSygnalow.Pomnoz(f1, f2);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(mnozenie, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
             sw = plotProcess.StandardInput;
@@ -358,16 +406,15 @@ namespace WpfApp1
 
         public void Podziel()
         {
-            generator = new GeneratorSygnalow();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
             string[] funkcjaPath = openFileDialog.SafeFileNames;
-            Funkcja f1 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
-            Funkcja f2 = generator.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja dzielenie = generator.Podziel(f1, f2);
-            generator.ZapiszDoPlikuWlasciwosci(dzielenie, saveSumaPath);
+            Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
+            Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
+            Funkcja dzielenie = GeneratorSygnalow.Podziel(f1, f2);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(dzielenie, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
             sw = plotProcess.StandardInput;
@@ -378,12 +425,11 @@ namespace WpfApp1
 
         public void Dyskretyzacja()
         {
-            generator = new GeneratorSygnalow();
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.ShowDialog();
             string path = openFileDialog.SafeFileName;
-            Funkcja temp = generator.WczytajZPlikuWlasciwosci(path);
+            Funkcja temp = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
             List<Punkt> lista = new List<Punkt>();
             double poczatek = temp.Punkty.First().X;
             decimal koniec = (decimal)temp.Punkty.Last().X;
@@ -397,7 +443,7 @@ namespace WpfApp1
                 lista.Add(new Punkt(Math.Round((double)iterator,2), temp.Punkty.ElementAt(i).Y));
                 i++;
             }
-            generator.ZapiszDoPlikuWlasciwosci(new Funkcja(lista), "dyskretyzacja.txt");
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(new Funkcja(lista), "dyskretyzacja.txt");
             sw2 = plotProcess.StandardInput;
             String gnuplot = "set decimalsign locale\n" +
            "plot \"dyskretyzacja.txt\" using 1:2 ";
@@ -405,7 +451,7 @@ namespace WpfApp1
             sw2.Flush();
             // return new Funkcja(lista);
         }
-        public Funkcja StworzFunkcje(string name, GeneratorSygnalow gen)
+        public Funkcja StworzFunkcje(string name)
         {
             double A=0, t1=0, d=0, T=0, ts=0, czP=0, p=0, kw=0, ns=0, n1=0;
             if(this.A!=null)
@@ -415,7 +461,7 @@ namespace WpfApp1
             if(this.d!=null)
             d = Double.Parse(this.d);
             if(this.T!=null)
-            T = Double.Parse(this.T);
+            T = Double.Parse(this.T,CultureInfo.InvariantCulture);
             if(this.ts!=null)
             ts = Double.Parse(this.ts);
             if(this.f!=null)
@@ -430,49 +476,191 @@ namespace WpfApp1
             n1 = Double.Parse(this.n1);
             if (name == "Sygnal o rozkładzie jednostajnym")
             {
-                return gen.SzumJednostajny(A, t1, d, czP);
+                return GeneratorSygnalow.SzumJednostajny(A, t1, d, czP);
             }
             else if (name == "Szum gaussowski")
             {
-                return gen.SzumGausowski(A, t1, d, czP);
+                return GeneratorSygnalow.SzumGausowski(A, t1, d, czP);
             }
             else if (name == "Sygnal sinusodalny")
             {
-                return gen.SygnalSinusoidalny(A, T, t1, d, czP);
+               
+                return GeneratorSygnalow.SygnalSinusoidalny(A, T, t1, d, czP);
             }
             else if (name == "Sygnal sinusoidalny wyprostowany jednopolowkowo")
             {
-                return gen.SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
+                return GeneratorSygnalow.SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
             }
             else if (name == "Sygnal sinusoidalny wyprostowany dwupolowkowo")
             {
-                return gen.SygnalSinusoidalnyWyprostowanyDwupolowkowo(A, T, t1, d, czP);
+                return GeneratorSygnalow.SygnalSinusoidalnyWyprostowanyDwupolowkowo(A, T, t1, d, czP);
             }
             else if (name == "Sygnal prostokatny")
             {
-                return gen.SygnalProstokatny(A, T, t1, d, kw, czP);
+                return GeneratorSygnalow.SygnalProstokatny(A, T, t1, d, kw, czP);
             }
             else if (name == "Sygnal prostokatny symetryczny")
             {
-                return gen.SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
+                return GeneratorSygnalow.SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
             } 
             else if (name == "Skok jednostkowy")
             {
-                return gen.SkokJednostkowy(A, t1, d, ts, czP);
+                return GeneratorSygnalow.SkokJednostkowy(A, t1, d, ts, czP);
             }
             else if (name == "Impuls jednostkowy")
             {
-                return gen.ImpulsJednostkowy(A, ns, n1, d, czP);
+                return GeneratorSygnalow.ImpulsJednostkowy(A, ns, n1, d, czP);
             }
             else if(name == "Szum impulsowy")
             {
-                return gen.SzumImpulsowy(A, t1, d, czP, p);
+                return GeneratorSygnalow.SzumImpulsowy(A, t1, d, czP, p);
             }
             else //sygnal trojkatny
             {
-                return gen.SygnalTrojkatny(A, T, t1, d, kw, czP);
+                return GeneratorSygnalow.SygnalTrojkatny(A, T, t1, d, kw, czP);
             }
         }
+
+        #region Visibility
+        public void HideVisibility()
+        {
+            visibilityA = Visibility.Hidden; visibilityT = Visibility.Hidden; visibilityd = Visibility.Hidden; visibilityt1 = Visibility.Hidden; visibilityf = Visibility.Hidden; visibilitykw = Visibility.Hidden; visibilityts = Visibility.Hidden; visibilityn1 = Visibility.Hidden; visibilityns = Visibility.Hidden; visibilityczP = Visibility.Hidden; visibilityp = Visibility.Hidden;
+            RaisePropertyChanged("VisibilityA"); RaisePropertyChanged("Visibilityt1"); RaisePropertyChanged("Visibilityd"); RaisePropertyChanged("VisibilityT"); RaisePropertyChanged("Visibilityf"); RaisePropertyChanged("Visibilitykw"); RaisePropertyChanged("Visibilityts"); RaisePropertyChanged("Visibilityn1"); RaisePropertyChanged("Visibilityns"); RaisePropertyChanged("Visibilityp"); RaisePropertyChanged("VisibilityczP");
+
+
+        }
+        public void ShowVisibilitySzum()
+        {
+            visibilityA = Visibility.Visible;
+            visibilityt1 = Visibility.Visible;
+            visibilityd = Visibility.Visible;
+            RaisePropertyChanged("VisibilityA");
+            RaisePropertyChanged("Visibilityt1");
+            RaisePropertyChanged("Visibilityd");
+        }
+
+        public void ShowVisibilitySinus()
+        {
+            visibilityA = Visibility.Visible;
+            visibilityT = Visibility.Visible;
+            visibilityt1 = Visibility.Visible;
+            visibilityd = Visibility.Visible;
+            visibilityf = Visibility.Visible;
+            RaisePropertyChanged("VisibilityA");
+            RaisePropertyChanged("VisibilityT");
+            RaisePropertyChanged("Visibilityt1");
+            RaisePropertyChanged("Visibilityd");
+            RaisePropertyChanged("Visibilityf");
+        }
+
+        public void ShowVisibilityProstokat()
+        {
+            visibilityA = Visibility.Visible;
+            visibilityT = Visibility.Visible;
+            visibilityf = Visibility.Visible;
+            visibilityt1 = Visibility.Visible;
+            visibilityd = Visibility.Visible;
+            visibilitykw = Visibility.Visible;
+            RaisePropertyChanged("VisibilityA");
+            RaisePropertyChanged("VisibilityT");
+            RaisePropertyChanged("Visibilityt1");
+            RaisePropertyChanged("Visibilityd");
+            RaisePropertyChanged("Visibilitykw");
+            RaisePropertyChanged("Visibilityf");
+        }
+
+        public void ShowVisibilitySkokJednostkowy()
+        {
+            visibilityA = Visibility.Visible;
+            visibilityt1 = Visibility.Visible;
+            visibilityd = Visibility.Visible;
+            visibilityts = Visibility.Visible;
+            RaisePropertyChanged("VisibilityA");
+            RaisePropertyChanged("Visibilityt1");
+            RaisePropertyChanged("Visibilityd");
+            RaisePropertyChanged("Visibilityts");
+        }
+        public void ShowVisibilityImpulsJednostkowy()
+        {
+            visibilityA = Visibility.Visible;
+            visibilityns = Visibility.Visible;
+            visibilityd = Visibility.Visible;
+            visibilityn1 = Visibility.Visible;
+            visibilityczP = Visibility.Visible;
+            RaisePropertyChanged("VisibilityA");
+            RaisePropertyChanged("Visibilityns");
+            RaisePropertyChanged("Visibilityd");
+            RaisePropertyChanged("Visibilityn1");
+            RaisePropertyChanged("VisibilityczP");
+        }
+
+        public void ShowVisibilitySzumImpulsowy()
+        {
+            visibilityA = Visibility.Visible;
+            visibilityt1 = Visibility.Visible;
+            visibilityd = Visibility.Visible;
+            visibilityp = Visibility.Visible;
+            visibilityczP = Visibility.Visible;
+            RaisePropertyChanged("VisibilityA");
+            RaisePropertyChanged("Visibilityt1");
+            RaisePropertyChanged("Visibilityd");
+            RaisePropertyChanged("Visibilityp");
+            RaisePropertyChanged("VisibilityczP");
+        }
+
+        public void Choise(string name)
+        {
+            if (name == "Sygnal o rozkładzie jednostajnym")
+            {
+                ShowVisibilitySzum();
+            }
+            else if (name == "Szum gaussowski")
+            {
+                ShowVisibilitySzum();
+            }
+            else if (name == "Sygnal sinusodalny")
+            {
+                ShowVisibilitySinus();
+            }
+            else if (name == "Sygnal sinusoidalny wyprostowany jednopolowkowo")
+            {
+                ShowVisibilitySinus();
+            }
+            else if (name == "Sygnal sinusoidalny wyprostowany dwupolowkowo")
+            {
+                ShowVisibilitySinus();
+            }
+            else if (name == "Sygnal prostokatny")
+            {
+                ShowVisibilityProstokat();
+            }
+            else if (name == "Sygnal prostokatny symetryczny")
+            {
+                ShowVisibilityProstokat();
+            }
+            else if (name == "Skok jednostkowy")
+            {
+                ShowVisibilitySkokJednostkowy();
+            }
+            else if (name == "Impuls jednostkowy")
+            {
+                ShowVisibilityImpulsJednostkowy();
+            }
+            else if (name == "Szum impulsowy")
+            {
+                ShowVisibilitySzumImpulsowy();
+            }
+            else //sygnal trojkatny
+            {
+                ShowVisibilityProstokat();
+            }
+        }
+
+
+
+
+
+        #endregion
     }
 
 

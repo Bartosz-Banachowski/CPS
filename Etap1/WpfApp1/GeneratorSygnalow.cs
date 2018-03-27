@@ -7,31 +7,32 @@ using System.Threading.Tasks;
 
 namespace WpfApp1
 {
-    public class GeneratorSygnalow
+    public static class GeneratorSygnalow
     {
-        public double[] domyslneWartosci;
+     //   public double[] domyslneWartosci;
 
-        Random rand = new Random();
+       // Random rand = new Random();
 
-        public GeneratorSygnalow()
-        {}
+        //public GeneratorSygnalow()
+        //{}
 
-        public GeneratorSygnalow(double t1, double f, bool rz)
-        {
+        //public GeneratorSygnalow(double t1, double f, bool rz)
+        //{
 
-        }
-        public Funkcja SzumJednostajny(double A, double t1, double d,double czP) //DZIALA
+        //}
+        public static Funkcja SzumJednostajny(double A, double t1, double d,double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
+            var rand = new Random();
             for(double i=0; i< zakres; i+=czP)
             {
-                lista.Add(new Punkt(Math.Round(i,2), rand.NextDouble() * (A - (-A)) + (-A)));
+                lista.Add(new Punkt(Math.Round(i,4), rand.NextDouble() * (A - (-A)) + (-A)));
             }
             return new Funkcja(lista,"Szum Jednostajny",t1,czP,true);
         } 
 
-        public Funkcja SzumGausowski(double A, double t1, double d, double czP) //DO ZROBIENIA
+        public static Funkcja SzumGausowski(double A, double t1, double d, double czP) //DO ZROBIENIA
         {
                     List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
@@ -46,41 +47,41 @@ namespace WpfApp1
             return new Funkcja(lista);
         }
 
-        public Funkcja SygnalSinusoidalny(double A, double T, double t1, double d, double czP) //DZIALA
+        public static Funkcja SygnalSinusoidalny(double A, double T, double t1, double d, double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
             for(double i=0; i<zakres; i+=czP)
             {
-                lista.Add(new Punkt(Math.Round(i,2),A*Math.Sin(((2*Math.PI)/T)*(i-t1))));
+                lista.Add(new Punkt(Math.Round(i,4),A*Math.Sin(((2*Math.PI)/T)*(i-t1))));
             }
             return new Funkcja(lista, "Sygnal sinusoidalny", t1, czP, true);
         }
 
-        public Funkcja SygnalSinusoidalnyWyprostowanyJednopolowkowo(double A, double T, double t1, double d, double czP) //DZIALA
+        public static Funkcja SygnalSinusoidalnyWyprostowanyJednopolowkowo(double A, double T, double t1, double d, double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
             for (double i = 0; i < zakres; i+=czP)
             {
-                lista.Add(new Punkt(Math.Round(i,2),(1/2.0) * A * ( Math.Sin( (2*Math.PI/T) * (i-t1) ) + Math.Abs( Math.Sin( (2*Math.PI/T) * (i-t1) ) ) ) ));
+                lista.Add(new Punkt(Math.Round(i,4),(1/2.0) * A * ( Math.Sin( (2*Math.PI/T) * (i-t1) ) + Math.Abs( Math.Sin( (2*Math.PI/T) * (i-t1) ) ) ) ));
             }
             return new Funkcja(lista, "Sygnal sinusoidalny wyprostowany jednopolowkowo", t1, czP, true);
         }
 
-        public Funkcja SygnalSinusoidalnyWyprostowanyDwupolowkowo(double A, double T, double t1, double d, double czP) //DZIALA
+        public static Funkcja SygnalSinusoidalnyWyprostowanyDwupolowkowo(double A, double T, double t1, double d, double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
             for(double i=t1; i<zakres; i += czP)
             {
-                lista.Add(new Punkt(Math.Round(i,2), A * Math.Abs(Math.Sin((2 * Math.PI / T) * (i - t1)))));
+                lista.Add(new Punkt(Math.Round(i,4), A * Math.Abs(Math.Sin((2 * Math.PI / T) * (i - t1)))));
             }
             return new Funkcja(lista, "Sygnal sinusoidalny wyprostowany dwupolowkowo", t1, czP, true);
         }
 
 
-        public Funkcja SygnalProstokatny(double A, double T, double t1, double d, double kw, double czP) //DZIALA
+        public static Funkcja SygnalProstokatny(double A, double T, double t1, double d, double kw, double czP) //DZIALA
         {
             double zakres = d + t1;
             List<Punkt> lista = new List<Punkt>();
@@ -89,16 +90,16 @@ namespace WpfApp1
                 int k = (int)(i/T);
                 if(i >= ((k*T) + t1) && i < ((kw*T) + (k*T) + t1))
                 {
-                    lista.Add(new Punkt(Math.Round(i,2), A));
+                    lista.Add(new Punkt(Math.Round(i,4), A));
                 } else if(i >= ((kw*T) - (k*T) + t1) && i < (T + k*T + t1))
                 {
-                    lista.Add(new Punkt(Math.Round(i,2), 0.0));
+                    lista.Add(new Punkt(Math.Round(i,4), 0.0));
                 }
             }
             return new Funkcja(lista,"Sygnal prostokatny", t1, czP, true);
         }
 
-        public Funkcja SygnalProstokatnySymetryczny(double A, double T, double t1, double d, double kw, double czP) //DZIALA
+        public static Funkcja SygnalProstokatnySymetryczny(double A, double T, double t1, double d, double kw, double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
@@ -107,17 +108,17 @@ namespace WpfApp1
                 int k = (int)(i / T);
                 if (i >= ((k * T) + t1) && i < ((kw * T) + (k * T) + t1))
                 {
-                    lista.Add(new Punkt(Math.Round(i,2), A));
+                    lista.Add(new Punkt(Math.Round(i,4), A));
                 }
                 else if (i >= ((kw * T) - (k * T) + t1) && i < (T + k * T + t1))
                 {
-                    lista.Add(new Punkt(Math.Round(i, 2), -A));
+                    lista.Add(new Punkt(Math.Round(i, 4), -A));
                 }
             }
             return new Funkcja(lista, "Sygnal prostokatny symetryczny", t1, czP, true);
         }
 
-        public Funkcja SygnalTrojkatny(double A, double T, double t1, double d, double kw, double czP) //DZIALA
+        public static Funkcja SygnalTrojkatny(double A, double T, double t1, double d, double kw, double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
@@ -126,16 +127,16 @@ namespace WpfApp1
                 int k = (int)(i / T);
                 if(i >= ((k*T) + t1) && i < ((kw*T) + (k*T) + t1))
                 {
-                    lista.Add(new Punkt(Math.Round(i, 2), ( A/(kw*T) ) * (i - (k*T) - t1) ));
+                    lista.Add(new Punkt(Math.Round(i, 4), ( A/(kw*T) ) * (i - (k*T) - t1) ));
                 } else if(i >= ((kw*T) + t1 + (k*T)) && i < (T + (k*T) + t1))
                 {
-                    lista.Add(new Punkt(Math.Round(i, 2), (-A)/(T*(1-kw)) * (i - (k*T) - t1) + (A/(1-kw)) ));
+                    lista.Add(new Punkt(Math.Round(i, 4), (-A)/(T*(1-kw)) * (i - (k*T) - t1) + (A/(1-kw)) ));
                 }
             }
             return new Funkcja(lista,"Sygnal trojkatny", t1, czP, true);
         }
 
-        public Funkcja SkokJednostkowy(double A, double t1, double d, double ts, double czP) //DZIALA
+        public static Funkcja SkokJednostkowy(double A, double t1, double d, double ts, double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;
@@ -144,10 +145,10 @@ namespace WpfApp1
             {
                 if (i > ts)
                 {
-                    lista.Add(new Punkt(Math.Round(i,2), A));
+                    lista.Add(new Punkt(Math.Round(i,4), A));
                 } else if (i == ts)
                 {
-                    lista.Add(new Punkt(Math.Round(i,2), 0.5*A));
+                    lista.Add(new Punkt(Math.Round(i,4), 0.5*A));
                 } else if(i < ts)
                 {
                     lista.Add(new Punkt(i, 0));
@@ -157,7 +158,7 @@ namespace WpfApp1
             return new Funkcja(lista,"Skok jednostkowy", t1, czP, true);
         }
 
-        public Funkcja ImpulsJednostkowy(double A, double ns, double n1, double d, double czP) //DZIALA
+        public static Funkcja ImpulsJednostkowy(double A, double ns, double n1, double d, double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
 
@@ -165,15 +166,15 @@ namespace WpfApp1
             for (double i = n1; i < d; i += czP)
             {
                 if (n1 == ns)
-                    lista.Add(new Punkt(Math.Round(i, 2), 1));
+                    lista.Add(new Punkt(Math.Round(i, 4), 1));
                 else
-                    lista.Add(new Punkt(Math.Round(i, 2), 0));
+                    lista.Add(new Punkt(Math.Round(i, 4), 0));
                 n1++;
             }
             return new Funkcja(lista,"Impuls jednostkowy", n1, czP, false);
         }
 
-        public Funkcja SzumImpulsowy(double A, double t1, double d, double czP, double p) //DZIALA
+        public static Funkcja SzumImpulsowy(double A, double t1, double d, double czP, double p) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
             Random rand = new Random();
@@ -194,7 +195,7 @@ namespace WpfApp1
         }
 
 
-        public void ZapiszDoPliku(Funkcja fun, string path)
+        public static void ZapiszDoPliku(Funkcja fun, string path)
         {
             using (StreamWriter writer = new StreamWriter(path))
             {
@@ -205,7 +206,7 @@ namespace WpfApp1
             }
         }
        
-        public void ZapiszDoPlikuWlasciwosci(Funkcja fun, string path)
+        public static void ZapiszDoPlikuWlasciwosci(Funkcja fun, string path)
         {
             using (StreamWriter writer = new StreamWriter(path))
             {
@@ -219,7 +220,7 @@ namespace WpfApp1
             }
         }
 
-        public void ZapiszDoPlikuWlasciwosci(Funkcja fun, string path, double t1, double f, bool rz)
+        public static void ZapiszDoPlikuWlasciwosci(Funkcja fun, string path, double t1, double f, bool rz)
         {
             using (StreamWriter writer = new StreamWriter(path))
             {
@@ -233,7 +234,7 @@ namespace WpfApp1
             }
         }
 
-        public Funkcja WczytajZPliku(string path)
+        public static Funkcja WczytajZPliku(string path)
         {
           
                 List<Punkt> listaPunktow = new List<Punkt>();
@@ -252,9 +253,9 @@ namespace WpfApp1
             }
         }
 
-        public Funkcja WczytajZPlikuWlasciwosci(string path)
+        public static Funkcja WczytajZPlikuWlasciwosci(string path)
         {
-            domyslneWartosci = new double[2];
+           // domyslneWartosci = new double[2];
             List<Punkt> listaPunktow = new List<Punkt>();
 
             using (TextReader reader = File.OpenText(path))
@@ -265,7 +266,7 @@ namespace WpfApp1
                 int iloscY = (bits.Length / 2)-3;
                 for (int i = 0; i < 2; i++)
                 {
-                    domyslneWartosci[i] = Double.Parse(bits[i]);
+               //     domyslneWartosci[i] = Double.Parse(bits[i]);
                 }
                 for (int i = 3, y = 0; y < iloscY; i += 2, y++)
                 {
@@ -275,7 +276,7 @@ namespace WpfApp1
             }
         }
 
-        public Funkcja Dodaj(Funkcja f1, Funkcja f2)
+        public static Funkcja Dodaj(Funkcja f1, Funkcja f2)
         {
             int ile;
             List<Punkt> lista = new List<Punkt>();
@@ -290,7 +291,7 @@ namespace WpfApp1
             return new Funkcja(lista);
         }
 
-        public Funkcja Odejmij(Funkcja f1, Funkcja f2)
+        public static Funkcja Odejmij(Funkcja f1, Funkcja f2)
         {
             int ile;
             List<Punkt> lista = new List<Punkt>();
@@ -305,7 +306,7 @@ namespace WpfApp1
             return new Funkcja(lista);
         }
 
-        public Funkcja Podziel(Funkcja f1, Funkcja f2)
+        public static Funkcja Podziel(Funkcja f1, Funkcja f2)
         {
             int ile;
             List<Punkt> lista = new List<Punkt>();
@@ -320,7 +321,7 @@ namespace WpfApp1
             return new Funkcja(lista);
         }
 
-        public Funkcja Pomnoz(Funkcja f1, Funkcja f2)
+        public static Funkcja Pomnoz(Funkcja f1, Funkcja f2)
         {
             int ile;
             List<Punkt> lista = new List<Punkt>();
@@ -335,30 +336,30 @@ namespace WpfApp1
             return new Funkcja(lista);
         }
 
-        public void StworzFunkcje(string name, double A, double T, double t1, double d, double ts, double czP, double p, double kw, double n1, double ns)
+        public static void StworzFunkcje(string name, double A, double T, double t1, double d, double ts, double czP, double p, double kw, double n1, double ns)
         {
             if (name == "Sygnal o rozkładzie jednostajnym")
-                this.SzumJednostajny(A, t1, d,czP);
+                SzumJednostajny(A, t1, d,czP);
             else if (name == "Szum gaussowski")
-                this.SzumGausowski(A, t1, d, czP);
+                SzumGausowski(A, t1, d, czP);
             else if (name == "Sygnal sinusodalny")
-                this.SygnalSinusoidalny(A, T, t1, d, czP);
+                SygnalSinusoidalny(A, T, t1, d, czP);
             else if (name == "Sygnal sinusoidalny wyprostowany jednopolowkowo")
-                this.SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
+                SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
             else if (name == "Sygnal sinusoidalny wyprostowany dwupolowkowo")
-                this.SygnalSinusoidalnyWyprostowanyDwupolowkowo(A, T, t1, d, czP);
+                SygnalSinusoidalnyWyprostowanyDwupolowkowo(A, T, t1, d, czP);
             else if (name == "Sygnal prostokatny")
-                this.SygnalProstokatny(A, T, t1, d, kw, czP);
+               SygnalProstokatny(A, T, t1, d, kw, czP);
             else if (name == "Sygnal prostokatny symetryczny")
-                this.SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
+               SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
             else if (name == "Sygnal trojkatny")
-                this.SygnalTrojkatny(A, T, t1, d, kw, czP);
+                SygnalTrojkatny(A, T, t1, d, kw, czP);
             else if (name == "Skok jednostkowy")
-                this.SkokJednostkowy(A, t1, d, ts, czP);
+                SkokJednostkowy(A, t1, d, ts, czP);
             else if (name == "Impuls jednostkowy")
-                this.ImpulsJednostkowy(A, ns, n1, d, czP);
+                ImpulsJednostkowy(A, ns, n1, d, czP);
             else if (name == "Szum impulsowy")
-                this.SzumImpulsowy(A, t1, d, czP, p);
+                SzumImpulsowy(A, t1, d, czP, p);
         }
     }  
 }

@@ -14,6 +14,7 @@ namespace WpfApp1
         private double czestotliwoscProbkowania;
         private bool rzeczywiste;
         private double amplituda;
+        private double rodzajFunkcji;
         
         // parametry do obliczenia
         string nazwa;
@@ -51,6 +52,7 @@ namespace WpfApp1
         public double CzestotliwoscProbkowania { get => czestotliwoscProbkowania; set => czestotliwoscProbkowania = value; }
         public bool Rzeczywiste { get => rzeczywiste; set => rzeczywiste = value; }
         public double Amplituda { get => amplituda; set => amplituda = value; }
+        public double RodzajFunkcji { get => rodzajFunkcji; set => rodzajFunkcji = value; }
 
         public double ObliczWartoscSrednia()
         {

@@ -26,6 +26,9 @@ namespace WpfApp1
             DataContext = new MyViewModel();
         }
 
-      
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
