@@ -195,13 +195,13 @@ namespace WpfApp1
         private void InitializeGnuplot()
         {
             plotProcess = new Process();
-            plotProcess.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
+            plotProcess.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
             plotProcess.StartInfo.UseShellExecute = false;
             plotProcess.StartInfo.RedirectStandardInput = true;
             plotProcess.Start();
 
             plot = new Process();
-            plot.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
+            plot.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
             plot.StartInfo.UseShellExecute = false;
             plot.StartInfo.RedirectStandardInput = true;
             plot.Start();
@@ -474,50 +474,31 @@ namespace WpfApp1
             ns = Double.Parse(this.ns);
             if(this.n1!=null)
             n1 = Double.Parse(this.n1);
-            if (name == "Sygnal o rozkładzie jednostajnym")
-            {
-                return GeneratorSygnalow.SzumJednostajny(A, t1, d, czP);
-            }
-            else if (name == "Szum gaussowski")
-            {
-                return GeneratorSygnalow.SzumGausowski(A, t1, d, czP);
-            }
-            else if (name == "Sygnal sinusodalny")
-            {
-               
-                return GeneratorSygnalow.SygnalSinusoidalny(A, T, t1, d, czP);
-            }
-            else if (name == "Sygnal sinusoidalny wyprostowany jednopolowkowo")
-            {
-                return GeneratorSygnalow.SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
-            }
-            else if (name == "Sygnal sinusoidalny wyprostowany dwupolowkowo")
-            {
-                return GeneratorSygnalow.SygnalSinusoidalnyWyprostowanyDwupolowkowo(A, T, t1, d, czP);
-            }
-            else if (name == "Sygnal prostokatny")
-            {
-                return GeneratorSygnalow.SygnalProstokatny(A, T, t1, d, kw, czP);
-            }
-            else if (name == "Sygnal prostokatny symetryczny")
-            {
-                return GeneratorSygnalow.SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
-            } 
-            else if (name == "Skok jednostkowy")
-            {
-                return GeneratorSygnalow.SkokJednostkowy(A, t1, d, ts, czP);
-            }
-            else if (name == "Impuls jednostkowy")
-            {
-                return GeneratorSygnalow.ImpulsJednostkowy(A, ns, n1, d, czP);
-            }
-            else if(name == "Szum impulsowy")
-            {
-                return GeneratorSygnalow.SzumImpulsowy(A, t1, d, czP, p);
-            }
-            else //sygnal trojkatny
-            {
-                return GeneratorSygnalow.SygnalTrojkatny(A, T, t1, d, kw, czP);
+            switch (name) {
+                case "Sygnal o rozkładzie jednostajnym":
+                    return GeneratorSygnalow.SzumJednostajny(A, t1, d, czP);
+                case "Szum gaussowski":
+                    return GeneratorSygnalow.SzumGausowski(A, t1, d, czP);
+                case "Sygnal sinusodalny":
+                    return GeneratorSygnalow.SygnalSinusoidalny(A, T, t1, d, czP);
+                case "Sygnal sinusoidalny wyprostowany jednopolowkowo":
+                    return GeneratorSygnalow.SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
+                case "Sygnal sinusoidalny wyprostowany dwupolowkowo":
+                    return GeneratorSygnalow.SygnalSinusoidalnyWyprostowanyDwupolowkowo(A, T, t1, d, czP);
+                case "Sygnal prostokatny":
+                    return GeneratorSygnalow.SygnalProstokatny(A, T, t1, d, kw, czP);
+                case "Sygnal prostokatny symetryczny":
+                    return GeneratorSygnalow.SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
+                case "Skok jednostkowy":
+                    return GeneratorSygnalow.SkokJednostkowy(A, t1, d, ts, czP);
+                case "Impuls jednostkowy":
+                    return GeneratorSygnalow.ImpulsJednostkowy(A, ns, n1, d, czP);
+                case "Szum impulsowy":
+                    return GeneratorSygnalow.SzumImpulsowy(A, t1, d, czP, p);
+                //case "Sygnal trojkatny":
+                //    return GeneratorSygnalow.SygnalTrojkatny(A, T, t1, d, kw, czP);
+                default: //syngal trojkatny
+                    return GeneratorSygnalow.SygnalTrojkatny(A, T, t1, d, kw, czP);
             }
         }
 
@@ -610,49 +591,60 @@ namespace WpfApp1
 
         public void Choise(string name)
         {
-            if (name == "Sygnal o rozkładzie jednostajnym")
+            switch (name)
             {
-                ShowVisibilitySzum();
-            }
-            else if (name == "Szum gaussowski")
-            {
-                ShowVisibilitySzum();
-            }
-            else if (name == "Sygnal sinusodalny")
-            {
-                ShowVisibilitySinus();
-            }
-            else if (name == "Sygnal sinusoidalny wyprostowany jednopolowkowo")
-            {
-                ShowVisibilitySinus();
-            }
-            else if (name == "Sygnal sinusoidalny wyprostowany dwupolowkowo")
-            {
-                ShowVisibilitySinus();
-            }
-            else if (name == "Sygnal prostokatny")
-            {
-                ShowVisibilityProstokat();
-            }
-            else if (name == "Sygnal prostokatny symetryczny")
-            {
-                ShowVisibilityProstokat();
-            }
-            else if (name == "Skok jednostkowy")
-            {
-                ShowVisibilitySkokJednostkowy();
-            }
-            else if (name == "Impuls jednostkowy")
-            {
-                ShowVisibilityImpulsJednostkowy();
-            }
-            else if (name == "Szum impulsowy")
-            {
-                ShowVisibilitySzumImpulsowy();
-            }
-            else //sygnal trojkatny
-            {
-                ShowVisibilityProstokat();
+                case "Sygnal o rozkładzie jednostajnym":
+                    ShowVisibilitySzum();
+                    break;
+                case "Szum gaussowski":
+                
+                    ShowVisibilitySzum();
+                    break;
+                case "Sygnal sinusodalny":
+                {
+                    ShowVisibilitySinus();
+                        break;
+                }
+                case "Sygnal sinusoidalny wyprostowany jednopolowkowo":
+                {
+                    ShowVisibilitySinus();
+                        break;
+                }
+                case "Sygnal sinusoidalny wyprostowany dwupolowkowo":
+                {
+                    ShowVisibilitySinus();
+                        break;
+                }
+                case "Sygnal prostokatny":
+                {
+                    ShowVisibilityProstokat();
+                        break;
+                }
+                case "Sygnal prostokatny symetryczny":
+                {
+                    ShowVisibilityProstokat();
+                        break;
+                }
+                case "Skok jednostkowy":
+                {
+                    ShowVisibilitySkokJednostkowy();
+                        break;
+                }
+                case "Impuls jednostkowy":
+                {
+                    ShowVisibilityImpulsJednostkowy();
+                        break;
+                }
+                case "Szum impulsowy":
+                {
+                    ShowVisibilitySzumImpulsowy();
+                        break;
+                }
+                case "Sygnal trojkatny": //sygnal trojkatny
+                {
+                    ShowVisibilityProstokat();
+                        break;
+                    }
             }
         }
 

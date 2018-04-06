@@ -18,7 +18,7 @@
         </ObjectDataProvider>
     </Window.Resources>
     <Grid>
-        <Button x:Name="Load" Content="Zapisz do pliku" Command="{Binding Load_Diagram}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="104"/>
+        <Button x:Name="Load" Content="Zapisz i narysuj" Command="{Binding Load_Diagram}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="104"/>
         <ComboBox HorizontalAlignment="Left" Height="20" SelectedItem="{Binding Path=WybranaFunkcja}" Margin="119,10,0,0" VerticalAlignment="Top" Width="290">
             <ComboBoxItem >Sygnal o rozkładzie jednostajnym</ComboBoxItem>
             <ComboBoxItem>Szum gaussowski</ComboBoxItem>
