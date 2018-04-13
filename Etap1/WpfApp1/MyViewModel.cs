@@ -21,7 +21,7 @@ namespace WpfApp1
             OdejmijSygnal = new DelegateCommand(Odejmij);
             PomnozSygnal = new DelegateCommand(Pomnoz);
             PodzielSygnal = new DelegateCommand(Podziel);
-            DyskretyzacjaSygnalu = new DelegateCommand(Dyskretyzacja);
+            ProbkowanieSygnalu = new DelegateCommand(Probkowanie);
             RysujFunkcje = new DelegateCommand(Rysuj);
             InitializeGnuplot();
             funkcja = new List<Funkcja>();
@@ -36,7 +36,7 @@ namespace WpfApp1
         public ICommand OdejmijSygnal { get; }
         public ICommand PomnozSygnal { get; }
         public ICommand PodzielSygnal { get; }
-        public ICommand DyskretyzacjaSygnalu { get; }
+        public ICommand ProbkowanieSygnalu { get; }
         public ICommand RysujFunkcje { get; }
         #endregion
 
@@ -46,7 +46,7 @@ namespace WpfApp1
         private List<Funkcja> funkcja;
       //  private GeneratorSygnalow generator;
         private string _wybranaFunkcja;
-        private string _A, _T, _t1="0", _d, _ts, _f="0,01", _p, _kw, _n1, _ns, _przedzial="5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna;
+        private string _A, _T, _t1 = "0", _d, _ts, _f = "0,01", _p, _kw, _n1, _ns, _przedzial = "5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna, sekundy;
         private Visibility visibilityA = Visibility.Hidden, visibilityT = Visibility.Hidden, visibilityd = Visibility.Hidden, visibilityt1 = Visibility.Hidden, visibilityf = Visibility.Hidden, visibilitykw = Visibility.Hidden, visibilityts = Visibility.Hidden, visibilityn1 = Visibility.Hidden, visibilityns = Visibility.Hidden, visibilityczP = Visibility.Hidden, visibilityp = Visibility.Hidden;
         #endregion
 
@@ -67,9 +67,18 @@ namespace WpfApp1
         int ilePrzedzialow;
         string wyborFunkcji;
         Funkcja fun;
+        string[] funkcjaPath;
 
         #region properties
-  
+
+        public string Sekundy
+        {
+            get { return sekundy; }
+            set { this.sekundy = value;
+               // RaisePropertyChanged("sekundy");
+            }
+        }
+
         public string WybranaFunkcja
         {
             get { return _wybranaFunkcja; }
@@ -237,9 +246,6 @@ namespace WpfApp1
         }
         private void ZapiszWykresDoPliku()
         {
-            wyborFunkcji = WybranaFunkcja.Substring(38, WybranaFunkcja.Length - 38);
-
-            // generator = new GeneratorSygnalow();
             funkcja.Add(StworzFunkcje(wyborFunkcji));
             SaveFile();
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcja.Last(), saveFilePathWykres);
@@ -346,17 +352,21 @@ namespace WpfApp1
                 sw1.Flush();
         }
 
-        public void Dodaj()
+        public void OperacjeNaFunkcjach()
         {
-           
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.Multiselect = true;
             openFileDialog.ShowDialog();
-            string[] funkcjaPath = openFileDialog.SafeFileNames;
+            funkcjaPath = openFileDialog.SafeFileNames;
             Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
             Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja suma = GeneratorSygnalow.Dodaj(f1, f2);
+        }
+
+        public void Dodaj()
+        {
+            OperacjeNaFunkcjach();
+            Funkcja suma = GeneratorSygnalow.Dodaj(GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]), GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]));
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(suma, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
@@ -368,14 +378,8 @@ namespace WpfApp1
 
         public void Odejmij()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Txt File(*.txt)| *.txt";
-            openFileDialog.Multiselect = true;
-            openFileDialog.ShowDialog();
-            string[] funkcjaPath = openFileDialog.SafeFileNames;
-            Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
-            Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja roznica = GeneratorSygnalow.Odejmij(f1, f2);
+            OperacjeNaFunkcjach();
+               Funkcja roznica = GeneratorSygnalow.Odejmij(GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]), GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]));
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(roznica, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
@@ -387,14 +391,8 @@ namespace WpfApp1
 
         public void Pomnoz()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Txt File(*.txt)| *.txt";
-            openFileDialog.Multiselect = true;
-            openFileDialog.ShowDialog();
-            string[] funkcjaPath = openFileDialog.SafeFileNames;
-            Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
-            Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja mnozenie = GeneratorSygnalow.Pomnoz(f1, f2);
+            OperacjeNaFunkcjach();
+            Funkcja mnozenie = GeneratorSygnalow.Pomnoz(GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]), GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]));
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(mnozenie, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
@@ -406,14 +404,8 @@ namespace WpfApp1
 
         public void Podziel()
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Txt File(*.txt)| *.txt";
-            openFileDialog.Multiselect = true;
-            openFileDialog.ShowDialog();
-            string[] funkcjaPath = openFileDialog.SafeFileNames;
-            Funkcja f1 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]);
-            Funkcja f2 = GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]);
-            Funkcja dzielenie = GeneratorSygnalow.Podziel(f1, f2);
+            OperacjeNaFunkcjach();
+            Funkcja dzielenie = GeneratorSygnalow.Podziel(GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[0]), GeneratorSygnalow.WczytajZPlikuWlasciwosci(funkcjaPath[1]));
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(dzielenie, saveSumaPath);
             String gnuplot = "set decimalsign locale\n" +
                 "plot \"" + saveSumaPath + "\" using 1:2 with lines";
@@ -423,7 +415,7 @@ namespace WpfApp1
           //  Histogram(saveSumaPath);
         }
 
-        public void Dyskretyzacja()
+        public void Probkowanie()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
@@ -433,7 +425,7 @@ namespace WpfApp1
             List<Punkt> lista = new List<Punkt>();
             double poczatek = temp.Punkty.First().X;
             decimal koniec = (decimal)temp.Punkty.Last().X;
-            decimal okres = Decimal.Parse(T);// Double.Parse(f);
+            decimal okres = Decimal.Parse(sekundy);// Double.Parse(f);
             decimal krok = (decimal)(temp.Punkty.ElementAt(1).X  - temp.Punkty.First().X);
 
             int i = 0;
@@ -446,7 +438,7 @@ namespace WpfApp1
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(new Funkcja(lista), "dyskretyzacja.txt");
             sw2 = plotProcess.StandardInput;
             String gnuplot = "set decimalsign locale\n" +
-           "plot \"dyskretyzacja.txt\" using 1:2 ";
+           "plot \"dyskretyzacja.txt\" using 1:2 with lines ";
             sw2.WriteLine(gnuplot);
             sw2.Flush();
             // return new Funkcja(lista);
@@ -495,8 +487,6 @@ namespace WpfApp1
                     return GeneratorSygnalow.ImpulsJednostkowy(A, ns, n1, d, czP);
                 case "Szum impulsowy":
                     return GeneratorSygnalow.SzumImpulsowy(A, t1, d, czP, p);
-                //case "Sygnal trojkatny":
-                //    return GeneratorSygnalow.SygnalTrojkatny(A, T, t1, d, kw, czP);
                 default: //syngal trojkatny
                     return GeneratorSygnalow.SygnalTrojkatny(A, T, t1, d, kw, czP);
             }

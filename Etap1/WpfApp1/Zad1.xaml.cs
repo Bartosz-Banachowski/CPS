@@ -16,17 +16,16 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
     /// <summary>
-    /// Logika interakcji dla klasy MainWindow.xaml
+    /// Interaction logic for Zad1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Zad1 : UserControl
     {
-        public static MyViewModel DataContext;
-        public MainWindow()
+        public Zad1()
         {
             InitializeComponent();
-            DataContext = new MyViewModel();
+            DataContext = MainWindow.DataContext;
+          //  DataContext = new MyViewModel();
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
 

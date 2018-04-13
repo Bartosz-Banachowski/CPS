@@ -9,17 +9,7 @@ namespace WpfApp1
 {
     public static class GeneratorSygnalow
     {
-     //   public double[] domyslneWartosci;
 
-       // Random rand = new Random();
-
-        //public GeneratorSygnalow()
-        //{}
-
-        //public GeneratorSygnalow(double t1, double f, bool rz)
-        //{
-
-        //}
         public static Funkcja SzumJednostajny(double A, double t1, double d,double czP) //DZIALA
         {
             List<Punkt> lista = new List<Punkt>();
@@ -338,28 +328,42 @@ namespace WpfApp1
 
         public static void StworzFunkcje(string name, double A, double T, double t1, double d, double ts, double czP, double p, double kw, double n1, double ns)
         {
-            if (name == "Sygnal o rozkładzie jednostajnym")
-                SzumJednostajny(A, t1, d,czP);
-            else if (name == "Szum gaussowski")
+            switch (name)
+            {
+                case "Sygnal o rozkładzie jednostajnym":
+                SzumJednostajny(A, t1, d, czP);
+                    break;
+                case "Szum gaussowski":
                 SzumGausowski(A, t1, d, czP);
-            else if (name == "Sygnal sinusodalny")
+                    break;
+                case "Sygnal sinusodalny":
                 SygnalSinusoidalny(A, T, t1, d, czP);
-            else if (name == "Sygnal sinusoidalny wyprostowany jednopolowkowo")
+                    break;
+                case "Sygnal sinusoidalny wyprostowany jednopolowkowo":
                 SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
-            else if (name == "Sygnal sinusoidalny wyprostowany dwupolowkowo")
+                    break;
+                case "Sygnal sinusoidalny wyprostowany dwupolowkowo":
                 SygnalSinusoidalnyWyprostowanyDwupolowkowo(A, T, t1, d, czP);
-            else if (name == "Sygnal prostokatny")
-               SygnalProstokatny(A, T, t1, d, kw, czP);
-            else if (name == "Sygnal prostokatny symetryczny")
-               SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
-            else if (name == "Sygnal trojkatny")
+                    break;
+                case "Sygnal prostokatny":
+                SygnalProstokatny(A, T, t1, d, kw, czP);
+                    break;
+                case "Sygnal prostokatny symetryczny":
+                SygnalProstokatnySymetryczny(A, T, t1, d, kw, czP);
+                    break;
+                case "Sygnal trojkatny":
                 SygnalTrojkatny(A, T, t1, d, kw, czP);
-            else if (name == "Skok jednostkowy")
+                    break;
+                case "Skok jednostkowy":
                 SkokJednostkowy(A, t1, d, ts, czP);
-            else if (name == "Impuls jednostkowy")
+                    break;
+                case "Impuls jednostkowy":
                 ImpulsJednostkowy(A, ns, n1, d, czP);
-            else if (name == "Szum impulsowy")
+                    break;
+                case "Szum impulsowy":
                 SzumImpulsowy(A, t1, d, czP, p);
+                    break;
+            }
         }
     }  
 }

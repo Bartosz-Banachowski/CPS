@@ -7,6 +7,14 @@ namespace WpfApp1
     {
         private readonly Action _action;
 
+        public DelegateCommand(Action<Object> action, Predicate<Object> predicate)
+        {
+        }
+        public DelegateCommand(Action<Object> action) : this(action, null)
+        {
+
+        }
+
         public DelegateCommand(Action action)
         {
             _action = action;
