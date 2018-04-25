@@ -36,3 +36,25 @@ D:\Studia\CPS\CPS\Etap1\WpfApp1\obj\Debug\Zad1.g.cs
 D:\Studia\CPS\CPS\Etap1\WpfApp1\obj\Debug\Zad1.baml
 D:\Studia\CPS\CPS\Etap1\WpfApp1\obj\Debug\Zad2.g.cs
 D:\Studia\CPS\CPS\Etap1\WpfApp1\obj\Debug\Zad2.baml
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\bin\Debug\WpfApp1.exe.config
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\bin\Debug\WpfApp1.exe
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\bin\Debug\WpfApp1.pdb
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1.csprojResolveAssemblyReference.cache
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\MainWindow.g.cs
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\Page2.g.cs
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\Zad1.g.cs
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\Zad2.g.cs
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\App.g.cs
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.cache
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1_MarkupCompile.lref
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\MainWindow.baml
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\Page2.baml
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\Zad1.baml
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\Zad2.baml
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1.g.resources
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1.Properties.Resources.resources
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1.csproj.GenerateResource.cache
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1.csproj.CoreCompileInputs.cache
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1.exe
+D:\Studia\Semestr 6\Cyfrowe Przetwarzanie Sygnałów\Zad2Sroda\CPS\Etap1\WpfApp1\obj\Debug\WpfApp1.pdb

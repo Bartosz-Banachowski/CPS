@@ -15,11 +15,18 @@ namespace WpfApp1
         private bool rzeczywiste;
         private double amplituda;
         private double rodzajFunkcji;
+        private double coIlePrzedzial;
         
         // parametry do obliczenia
         string nazwa;
         private List<Punkt> punkty;
         public List<double> t;
+
+        public double CoIlePrzedzial
+        {
+            get { return coIlePrzedzial; }
+            set { this.coIlePrzedzial = value; }
+        }
 
         public Funkcja(List<Punkt> lista)
         {

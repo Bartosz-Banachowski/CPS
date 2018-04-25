@@ -64,6 +64,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ITab.cs" />
+    <Compile Include="Kwantyzacja.cs" />
     <Compile Include="Page2.xaml.cs">
       <DependentUpon>Page2.xaml</DependentUpon>
     </Compile>

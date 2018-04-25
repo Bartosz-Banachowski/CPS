@@ -24,8 +24,7 @@ namespace WpfApp1
             ProbkowanieSygnalu = new DelegateCommand(Probkowanie);
             RysujFunkcje = new DelegateCommand(Rysuj);
             InitializeGnuplot();
-            funkcja = new List<Funkcja>();
-            funkcjaHistogram = new List<Funkcja>();
+          
         }
         #endregion
 
@@ -42,11 +41,11 @@ namespace WpfApp1
 
         #region private
         
-       private List<Funkcja> funkcjaHistogram;
-        private List<Funkcja> funkcja;
-      //  private GeneratorSygnalow generator;
-        private string _wybranaFunkcja;
-        private string _A, _T, _t1 = "0", _d, _ts, _f = "0,01", _p, _kw, _n1, _ns, _przedzial = "5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna, sekundy;
+       private Funkcja funkcjaHistogram;
+        private Funkcja funkcja;
+        //  private GeneratorSygnalow generator;
+        private string _wybranaFunkcja, iloscBitow = "0";
+        private string _A, _T, _t1 = "0", _d, _ts, _f = "0,01", _p, _kw, _n1, _ns, _przedzial = "5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna, czestotliwoscProbkowania;
         private Visibility visibilityA = Visibility.Hidden, visibilityT = Visibility.Hidden, visibilityd = Visibility.Hidden, visibilityt1 = Visibility.Hidden, visibilityf = Visibility.Hidden, visibilitykw = Visibility.Hidden, visibilityts = Visibility.Hidden, visibilityn1 = Visibility.Hidden, visibilityns = Visibility.Hidden, visibilityczP = Visibility.Hidden, visibilityp = Visibility.Hidden;
         #endregion
 
@@ -71,11 +70,17 @@ namespace WpfApp1
 
         #region properties
 
-        public string Sekundy
+        public string IloscBitow
         {
-            get { return sekundy; }
-            set { this.sekundy = value;
-               // RaisePropertyChanged("sekundy");
+            get { return iloscBitow; }
+            set { this.iloscBitow = value; }
+        }
+
+
+        public string CzestotliwoscProbkowania
+        {
+            get { return czestotliwoscProbkowania; }
+            set { this.czestotliwoscProbkowania = value;
             }
         }
 
@@ -204,13 +209,13 @@ namespace WpfApp1
         private void InitializeGnuplot()
         {
             plotProcess = new Process();
-            plotProcess.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
+            plotProcess.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
             plotProcess.StartInfo.UseShellExecute = false;
             plotProcess.StartInfo.RedirectStandardInput = true;
             plotProcess.Start();
 
             plot = new Process();
-            plot.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
+            plot.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
             plot.StartInfo.UseShellExecute = false;
             plot.StartInfo.RedirectStandardInput = true;
             plot.Start();
@@ -246,9 +251,10 @@ namespace WpfApp1
         }
         private void ZapiszWykresDoPliku()
         {
-            funkcja.Add(StworzFunkcje(wyborFunkcji));
+            funkcja = StworzFunkcje(wyborFunkcji);
+           
             SaveFile();
-            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcja.Last(), saveFilePathWykres);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcja, saveFilePathWykres);
             sw = plotProcess.StandardInput;
             String gnuplot;
             if (wyborFunkcji == "Szum impulsowy" || wyborFunkcji == "Impuls jednostkowy")
@@ -275,8 +281,7 @@ namespace WpfApp1
         }
 
         private void Rysuj()
-        {
-            
+        {       
             Browse();
             sw = plotProcess.StandardInput;
             String gnuplot;
@@ -309,11 +314,11 @@ namespace WpfApp1
         {
             ilePrzedzialow =  Int16.Parse(Przedzial);
           
-            funkcjaHistogram.Add(GeneratorSygnalow.WczytajZPlikuWlasciwosci(path));
+            funkcjaHistogram = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
             SortedDictionary<int, int> histogram = new SortedDictionary<int, int>();
         
-            Punkt min = funkcjaHistogram.Last().Punkty.Min();
-            Punkt max = funkcjaHistogram.Last().Punkty.Max();
+            Punkt min = funkcjaHistogram.Punkty.Min();
+            Punkt max = funkcjaHistogram.Punkty.Max();
             double czestotliwoscProbkowania = (max.Y - min.Y) / ilePrzedzialow; //ilosc punktow w danej probce
             var histogramList = new List<Punkt>();
             for (int i = 0; i < ilePrzedzialow; i++)
@@ -321,7 +326,7 @@ namespace WpfApp1
                 histogramList.Add(new Punkt(Math.Round(min.Y + i * czestotliwoscProbkowania,2), 0));
             }
 
-            foreach (var punkt in funkcjaHistogram.Last().Punkty)
+            foreach (var punkt in funkcjaHistogram.Punkty)
             {
                 var index = ((punkt.Y - min.Y) / czestotliwoscProbkowania);
                 if (index !=0 && index % 1 == 0)
@@ -333,7 +338,7 @@ namespace WpfApp1
            //liczenie t dla funkcji
            for (int i=0; i < histogramList.Count; i++)
             {
-                funkcjaHistogram.Last().t.Add((i + 1) / czestotliwoscProbkowania);
+                funkcjaHistogram.t.Add((i + 1) / czestotliwoscProbkowania);
             }
 
                 using (StreamWriter writer = new StreamWriter(saveFilePathHistogram))
@@ -421,21 +426,25 @@ namespace WpfApp1
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.ShowDialog();
             string path = openFileDialog.SafeFileName;
-            Funkcja temp = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
+            Funkcja funkcjaWczytanaZPliku = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
+
             List<Punkt> lista = new List<Punkt>();
-            double poczatek = temp.Punkty.First().X;
-            decimal koniec = (decimal)temp.Punkty.Last().X;
-            decimal okres = Decimal.Parse(sekundy);// Double.Parse(f);
-            decimal krok = (decimal)(temp.Punkty.ElementAt(1).X  - temp.Punkty.First().X);
+            double poczatek = funkcjaWczytanaZPliku.Punkty.First().X;
+            decimal koniec = (decimal)funkcjaWczytanaZPliku.Punkty.Last().X;
+            decimal Temp = Decimal.Parse(CzestotliwoscProbkowania);// Double.Parse(f);
+            decimal okres = 1 / Temp;
+            decimal krok = (decimal)(funkcjaWczytanaZPliku.Punkty.ElementAt(1).X  - funkcjaWczytanaZPliku.Punkty.First().X);
 
             int i = 0;
             for (decimal iterator = (decimal)poczatek; iterator < koniec; iterator+=krok)
             {
                 if(Math.Round(iterator,2)%Math.Round(okres,2)==0)
-                lista.Add(new Punkt(Math.Round((double)iterator,2), temp.Punkty.ElementAt(i).Y));
+                lista.Add(new Punkt(Math.Round((double)iterator,2), funkcjaWczytanaZPliku.Punkty.ElementAt(i).Y));
                 i++;
             }
-            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(new Funkcja(lista), "dyskretyzacja.txt");
+            Funkcja funkcjaPoProbkowaniu = new Funkcja(lista);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcjaPoProbkowaniu, "dyskretyzacja.txt");
+
             sw2 = plotProcess.StandardInput;
             String gnuplot = "set decimalsign locale\n" +
            "plot \"dyskretyzacja.txt\" using 1:2 with lines ";
@@ -443,8 +452,17 @@ namespace WpfApp1
             sw2.Flush();
             // return new Funkcja(lista);
         }
+
+        public void Kwantyzuj(Funkcja funkcja)
+        {
+            Kwantyzacja.listaY = funkcja.Punkty.Select(x => x.Y).ToList();
+            double IloscPrzedzialowKwantyzacji = Math.Pow(2, (double.Parse(IloscBitow)));
+            Kwantyzacja.ObliczCoIlePrzedzial((int)IloscPrzedzialowKwantyzacji);
+        }
+
         public Funkcja StworzFunkcje(string name)
         {
+            Funkcja fun;
             double A=0, t1=0, d=0, T=0, ts=0, czP=0, p=0, kw=0, ns=0, n1=0;
             if(this.A!=null)
             A = Double.Parse(this.A);
@@ -468,11 +486,16 @@ namespace WpfApp1
             n1 = Double.Parse(this.n1);
             switch (name) {
                 case "Sygnal o rozkładzie jednostajnym":
-                    return GeneratorSygnalow.SzumJednostajny(A, t1, d, czP);
+                    fun = GeneratorSygnalow.SzumJednostajny(A, t1, d, czP);
+
+                    return fun;
                 case "Szum gaussowski":
                     return GeneratorSygnalow.SzumGausowski(A, t1, d, czP);
                 case "Sygnal sinusodalny":
-                    return GeneratorSygnalow.SygnalSinusoidalny(A, T, t1, d, czP);
+                    fun =  GeneratorSygnalow.SygnalSinusoidalny(A, T, t1, d, czP);
+                   
+                   // fun.CoIlePrzedzial = (A * 2) / IloscPrzedzialowKwantyzacji;
+                    return fun;
                 case "Sygnal sinusoidalny wyprostowany jednopolowkowo":
                     return GeneratorSygnalow.SygnalSinusoidalnyWyprostowanyJednopolowkowo(A, T, t1, d, czP);
                 case "Sygnal sinusoidalny wyprostowany dwupolowkowo":

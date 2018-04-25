@@ -8,7 +8,9 @@
              d:DesignHeight="470" d:DesignWidth="540">
     <Grid>
         <Button Content="Próbkowanie równomierne" Command="{Binding ProbkowanieSygnalu}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,48,0,0" TextWrapping="Wrap" Text="{Binding Sekundy }" VerticalAlignment="Top" Width="145"/>
-        <Label Content="co ile sekund" HorizontalAlignment="Left" Margin="160,48,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,48,0,0" TextWrapping="Wrap" Text="{Binding CzestotliwoscProbkowania }" VerticalAlignment="Top" Width="145"/>
+        <Label Content="czestotliwość próbkowania" HorizontalAlignment="Left" Margin="160,48,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Height="24" Margin="10,86,0,0" TextWrapping="Wrap" Text="{Binding IloscBitow}" VerticalAlignment="Top" Width="145"/>
+        <Label Content="ilość bitów" HorizontalAlignment="Left" Margin="167,86,0,0" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>
