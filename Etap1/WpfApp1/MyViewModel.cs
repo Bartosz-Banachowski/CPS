@@ -24,6 +24,7 @@ namespace WpfApp1
             ProbkowanieSygnalu = new DelegateCommand(Probkowanie);
             RysujFunkcje = new DelegateCommand(Rysuj);
             Kwant = new DelegateCommand(Kwantyzuj);
+            Interp = new DelegateCommand(Interpolowanie);
             InitializeGnuplot();
           
         }
@@ -39,6 +40,7 @@ namespace WpfApp1
         public ICommand ProbkowanieSygnalu { get; }
         public ICommand RysujFunkcje { get; }
         public ICommand Kwant { get; }
+        public ICommand Interp { get; }
         #endregion
 
         #region private
@@ -47,7 +49,7 @@ namespace WpfApp1
         private Funkcja funkcja;
         //  private GeneratorSygnalow generator;
         private string _wybranaFunkcja, iloscBitow = "0";
-        private string _A, _T, _t1 = "0", _d, _ts, _f = "0,01", _p, _kw, _n1, _ns, _przedzial = "5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna, czestotliwoscProbkowania;
+        private string _A, _T, _t1 = "0", _d, _ts, _f = "0.01", _p, _kw, _n1, _ns, _przedzial = "5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna, czestotliwoscProbkowania;
         private Visibility visibilityA = Visibility.Hidden, visibilityT = Visibility.Hidden, visibilityd = Visibility.Hidden, visibilityt1 = Visibility.Hidden, visibilityf = Visibility.Hidden, visibilitykw = Visibility.Hidden, visibilityts = Visibility.Hidden, visibilityn1 = Visibility.Hidden, visibilityns = Visibility.Hidden, visibilityczP = Visibility.Hidden, visibilityp = Visibility.Hidden;
         #endregion
 
@@ -69,6 +71,7 @@ namespace WpfApp1
         string wyborFunkcji;
         Funkcja fun;
         string[] funkcjaPath;
+        Funkcja funkcjaPoProbkowaniu;
 
         #region properties
 
@@ -211,13 +214,13 @@ namespace WpfApp1
         private void InitializeGnuplot()
         {
             plotProcess = new Process();
-            plotProcess.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
+            plotProcess.StartInfo.FileName = @"C:\Program Files\_InstalledPrograms\gnuplot\bin\gnuplot.exe";
             plotProcess.StartInfo.UseShellExecute = false;
             plotProcess.StartInfo.RedirectStandardInput = true;
             plotProcess.Start();
 
             plot = new Process();
-            plot.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
+            plot.StartInfo.FileName = @"C:\Program Files\_InstalledPrograms\gnuplot\bin\gnuplot.exe";
             plot.StartInfo.UseShellExecute = false;
             plot.StartInfo.RedirectStandardInput = true;
             plot.Start();
@@ -422,6 +425,25 @@ namespace WpfApp1
           //  Histogram(saveSumaPath);
         }
 
+        public void Interpolowanie()
+        {
+            Probkowanie();
+            Interpolacja.oblicz(funkcjaPoProbkowaniu);
+            sw = plotProcess.StandardInput;
+            String gnuplot = "set decimalsign locale\n" +
+           "plot \"interpolacja.txt\" using 1:2 with lines";
+
+            String testprobkowania = "set decimalsign locale\n" +
+               //  "set border linewidth 1.5 \n" +
+               "set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 \n" +
+               "set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2 \n" +
+               "plot \"" + "sinn.txt" + "\" using 1:2 with lines linestyle 1, \"interpolacja.txt\" using 1:2 with lines linestyle 2 \n";// +
+                                                                                                                                 // "\"kwantyzacja.txt\" using 1:2 with lines linestyle 2"; 
+            sw.WriteLine(testprobkowania);
+            sw.Flush();
+        }
+
+
         public void Probkowanie()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -444,7 +466,7 @@ namespace WpfApp1
                 lista.Add(new Punkt(Math.Round((double)iterator,2), funkcjaWczytanaZPliku.Punkty.ElementAt(i).Y));
                 i++;
             }
-            Funkcja funkcjaPoProbkowaniu = new Funkcja(lista);
+            funkcjaPoProbkowaniu = new Funkcja(lista);
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcjaPoProbkowaniu, "dyskretyzacja.txt");
           //  var test123 = Kwantyzuj(funkcjaWczytanaZPliku);
          //   GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(test123, "kwantyzacja.txt");
@@ -459,7 +481,7 @@ namespace WpfApp1
                 
 
             String gnuplot = "set decimalsign locale\n" +
-           "plot \"sinus.txt\" using 1:2 with lines ";
+           "plot \"dyskretyzacja.txt\" using 1:2 ";
             sw2.WriteLine(gnuplot);
             sw2.Flush();
             // return new Funkcja(lista);

@@ -28,6 +28,8 @@ namespace WpfApp1
             set { this.coIlePrzedzial = value; }
         }
 
+        public Funkcja() { }
+
         public Funkcja(List<Punkt> lista)
         {
             punkty = new List<Punkt>(lista);
