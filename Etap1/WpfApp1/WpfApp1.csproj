@@ -63,8 +63,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interpolacja.cs" />
     <Compile Include="ITab.cs" />
+    <Compile Include="KonwersjaCA.cs" />
     <Compile Include="Kwantyzacja.cs" />
+    <Compile Include="MiaryPodobienstwa.cs" />
     <Compile Include="Page2.xaml.cs">
       <DependentUpon>Page2.xaml</DependentUpon>
     </Compile>

@@ -43,7 +43,7 @@
         <TextBox x:Name="ns" Text="{Binding ns}" Visibility="{Binding Visibilityns,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" Margin="15,320,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="102"/>
         <TextBox Name="CzyRzeczywista" Text="{Binding CzyRzeczywista}" HorizontalAlignment="Left" Height="23" Margin="15,67,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="102"/>
         <Label Visibility="{Binding VisibilityA,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Content="amplituda (A)" HorizontalAlignment="Left" Margin="123,96,0,0" VerticalAlignment="Top"/>
-        <Label Content="okres (T)" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="123,122,0,0" VerticalAlignment="Top"/>
+        <Label Content="okres (T)" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="166,122,0,0" VerticalAlignment="Top"/>
         <Label Content="czas wykonania skoku (ts)" Visibility="{Binding Visibilityts,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="123,264,0,0" VerticalAlignment="Top"/>
         <Label Content="czas trwania sygnału (d)" Visibility="{Binding Visibilityd,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="123,152,0,0" VerticalAlignment="Top"/>
         <Label Content="czas początkowy (t1)" Visibility="{Binding Visibilityt1,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="123,180,0,0" VerticalAlignment="Top"/>
@@ -71,8 +71,8 @@
         <Label Content="wartość skuteczna" HorizontalAlignment="Left" Margin="358,234,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Visibility="{Binding Visibilityf,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="14,208,0,0" TextWrapping="Wrap" Text="{Binding T,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged,Converter={StaticResource Konwerter}}" VerticalAlignment="Top" Width="104"/>
         <Label Content="częstotliwość (f)" Visibility="{Binding Visibilityf,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="123,208,0,0" VerticalAlignment="Top"/>
-        <Slider HorizontalAlignment="Left" Value="{Binding T}" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" TickPlacement="BottomRight" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="0" Name="SliderValue" Maximum="10" Margin="40,124,0,0" VerticalAlignment="Top" Width="78"/>
-        <TextBox HorizontalAlignment="Left" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="14,124,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="21"/>
+        <Slider HorizontalAlignment="Left" Value="{Binding T}" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" TickPlacement="BottomRight" IsSnapToTickEnabled="True" TickFrequency="1" Minimum="0" Name="SliderValue" Maximum="10" Margin="56,124,0,0" VerticalAlignment="Top" Width="101"/>
+        <TextBox HorizontalAlignment="Left" Visibility="{Binding VisibilityT,Mode=OneWay,UpdateSourceTrigger=PropertyChanged}" Height="23" Margin="14,124,0,0" TextWrapping="Wrap" Text="{Binding ElementName=SliderValue, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="37"/>
 
     </Grid>
 </UserControl>

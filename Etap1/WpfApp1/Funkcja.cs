@@ -40,7 +40,6 @@ namespace WpfApp1
             t = new List<double>();
             this.nazwa = nazwa;
         }
-
    
         public Funkcja(List<Punkt> lista,string nazwa, double czasPoczatkowy, double czestotliwosc, bool czyRzeczywiste)
         {
