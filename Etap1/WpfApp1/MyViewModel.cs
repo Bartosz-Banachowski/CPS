@@ -23,6 +23,7 @@ namespace WpfApp1
             PodzielSygnal = new DelegateCommand(Podziel);
             ProbkowanieSygnalu = new DelegateCommand(Probkowanie);
             RysujFunkcje = new DelegateCommand(Rysuj);
+            Kwant = new DelegateCommand(Kwantyzuj);
             InitializeGnuplot();
           
         }
@@ -37,6 +38,7 @@ namespace WpfApp1
         public ICommand PodzielSygnal { get; }
         public ICommand ProbkowanieSygnalu { get; }
         public ICommand RysujFunkcje { get; }
+        public ICommand Kwant { get; }
         #endregion
 
         #region private
@@ -209,13 +211,13 @@ namespace WpfApp1
         private void InitializeGnuplot()
         {
             plotProcess = new Process();
-            plotProcess.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
+            plotProcess.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
             plotProcess.StartInfo.UseShellExecute = false;
             plotProcess.StartInfo.RedirectStandardInput = true;
             plotProcess.Start();
 
             plot = new Process();
-            plot.StartInfo.FileName = @"D:\ProgramFiles\gnuplot\bin\gnuplot.exe";
+            plot.StartInfo.FileName = @"D:\Program Files\gnuplot\bin\gnuplot.exe";
             plot.StartInfo.UseShellExecute = false;
             plot.StartInfo.RedirectStandardInput = true;
             plot.Start();
@@ -444,20 +446,49 @@ namespace WpfApp1
             }
             Funkcja funkcjaPoProbkowaniu = new Funkcja(lista);
             GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcjaPoProbkowaniu, "dyskretyzacja.txt");
-
+          //  var test123 = Kwantyzuj(funkcjaWczytanaZPliku);
+         //   GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(test123, "kwantyzacja.txt");
             sw2 = plotProcess.StandardInput;
+
+            String testprobkowania = "set decimalsign locale\n" +
+                //  "set border linewidth 1.5 \n" +
+                "set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 \n" +
+                "set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2 \n" +
+                "plot \"sinus.txt\" using 1:2 with lines linestyle 1, \"kwantyzacja.txt\" using 1:2 with lines linestyle 2 \n";// +
+               // "\"kwantyzacja.txt\" using 1:2 with lines linestyle 2"; 
+                
+
             String gnuplot = "set decimalsign locale\n" +
-           "plot \"dyskretyzacja.txt\" using 1:2 with lines ";
+           "plot \"sinus.txt\" using 1:2 with lines ";
             sw2.WriteLine(gnuplot);
             sw2.Flush();
             // return new Funkcja(lista);
         }
 
-        public void Kwantyzuj(Funkcja funkcja)
+        public void Kwantyzuj()
         {
-            Kwantyzacja.listaY = funkcja.Punkty.Select(x => x.Y).ToList();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Txt File(*.txt)| *.txt";
+            openFileDialog.ShowDialog();
+            string path = openFileDialog.SafeFileName;
+            Funkcja funkcjaWczytanaZPliku = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
+            Funkcja temp = funkcjaWczytanaZPliku;
+            Kwantyzacja.listaY = temp.Punkty.Select(x => x.Y).ToList();
             double IloscPrzedzialowKwantyzacji = Math.Pow(2, (double.Parse(IloscBitow)));
             Kwantyzacja.ObliczCoIlePrzedzial((int)IloscPrzedzialowKwantyzacji);
+            var s = Kwantyzacja.getCoIlePrzedzial();
+            Funkcja result = Kwantyzacja.KwantyzacjaRownomiernaZZaokragleniem(temp);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(result, "kwantyzacja.txt");
+            sw2 = plotProcess.StandardInput;
+
+            String testprobkowania = "set decimalsign locale\n" +
+                //  "set border linewidth 1.5 \n" +
+                "set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 \n" +
+                "set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2 \n" +
+                "plot \""+ path+"\" using 1:2 with lines linestyle 1, \"kwantyzacja.txt\" using 1:2 with lines linestyle 2 \n";// +
+                                                                                                                               // "\"kwantyzacja.txt\" using 1:2 with lines linestyle 2"; 
+            sw2.WriteLine(testprobkowania);
+            sw2.Flush();
         }
 
         public Funkcja StworzFunkcje(string name)
