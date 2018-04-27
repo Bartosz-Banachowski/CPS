@@ -69,6 +69,7 @@
     <Compile Include="Page2.xaml.cs">
       <DependentUpon>Page2.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RekonstrukcjaSinc.cs" />
     <Compile Include="RodzajFunkcji.cs" />
     <Compile Include="Tab.cs" />
     <Compile Include="Zad1.xaml.cs">

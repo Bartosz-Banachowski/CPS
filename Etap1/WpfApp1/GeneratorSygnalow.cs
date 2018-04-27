@@ -22,7 +22,7 @@ namespace WpfApp1
             return new Funkcja(lista,"Szum Jednostajny",t1,czP,true);
         } 
 
-        public static Funkcja SzumGausowski(double A, double t1, double d, double czP) //DO ZROBIENIA
+        public static Funkcja SzumGausowski(double A, double t1, double d, double czP)
         {
                     List<Punkt> lista = new List<Punkt>();
             double zakres = d + t1;

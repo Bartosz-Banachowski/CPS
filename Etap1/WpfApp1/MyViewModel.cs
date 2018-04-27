@@ -25,6 +25,7 @@ namespace WpfApp1
             RysujFunkcje = new DelegateCommand(Rysuj);
             Kwant = new DelegateCommand(Kwantyzuj);
             Interp = new DelegateCommand(Interpolowanie);
+            sinc = new DelegateCommand(RekonSinc);
             InitializeGnuplot();
           
         }
@@ -41,6 +42,7 @@ namespace WpfApp1
         public ICommand RysujFunkcje { get; }
         public ICommand Kwant { get; }
         public ICommand Interp { get; }
+        public ICommand sinc { get; }
         #endregion
 
         #region private
@@ -62,6 +64,7 @@ namespace WpfApp1
 
         Process plotProcess, plot;
         StreamWriter sw, sw1, sw2;
+        string pathh;
         string openFilePathWykres;
         string saveFilePathWykres;
         string saveFilePathHistogram = "histogram.txt";
@@ -434,11 +437,22 @@ namespace WpfApp1
            "plot \"interpolacja.txt\" using 1:2 with lines";
 
             String testprobkowania = "set decimalsign locale\n" +
-               //  "set border linewidth 1.5 \n" +
                "set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 \n" +
                "set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2 \n" +
-               "plot \"" + "sinn.txt" + "\" using 1:2 with lines linestyle 1, \"interpolacja.txt\" using 1:2 with lines linestyle 2 \n";// +
-                                                                                                                                 // "\"kwantyzacja.txt\" using 1:2 with lines linestyle 2"; 
+               "plot \"" + pathh + "\" using 1:2 with lines linestyle 1, \"interpolacja.txt\" using 1:2 with lines linestyle 2 \n";
+            sw.WriteLine(testprobkowania);
+            sw.Flush();
+        }
+
+        public void RekonSinc()
+        {
+            Probkowanie();
+            RekonstrukcjaSinc.oblicz(funkcjaPoProbkowaniu, double.Parse(d));
+            sw = plotProcess.StandardInput;
+            String testprobkowania = "set decimalsign locale\n" +
+               "set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 \n" +
+               "set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2 \n" +
+               "plot \"" + pathh + "\" using 1:2 with lines linestyle 1, \"RekonstrukcjaSinc.txt\" using 1:2 with lines linestyle 2 \n";
             sw.WriteLine(testprobkowania);
             sw.Flush();
         }
@@ -450,6 +464,7 @@ namespace WpfApp1
             openFileDialog.Filter = "Txt File(*.txt)| *.txt";
             openFileDialog.ShowDialog();
             string path = openFileDialog.SafeFileName;
+            pathh = path;
             Funkcja funkcjaWczytanaZPliku = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
 
             List<Punkt> lista = new List<Punkt>();
@@ -485,6 +500,7 @@ namespace WpfApp1
             sw2.WriteLine(gnuplot);
             sw2.Flush();
             // return new Funkcja(lista);
+
         }
 
         public void Kwantyzuj()
