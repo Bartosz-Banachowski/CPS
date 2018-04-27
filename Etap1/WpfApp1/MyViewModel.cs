@@ -26,6 +26,7 @@ namespace WpfApp1
             Kwant = new DelegateCommand(Kwantyzuj);
             Interp = new DelegateCommand(Interpolowanie);
             sinc = new DelegateCommand(RekonSinc);
+
             InitializeGnuplot();
           
         }
@@ -43,6 +44,8 @@ namespace WpfApp1
         public ICommand Kwant { get; }
         public ICommand Interp { get; }
         public ICommand sinc { get; }
+
+
         #endregion
 
         #region private
@@ -50,8 +53,13 @@ namespace WpfApp1
        private Funkcja funkcjaHistogram;
         private Funkcja funkcja;
         //  private GeneratorSygnalow generator;
+
         private string _wybranaFunkcja, iloscBitow = "0";
         private string _A, _T, _t1 = "0", _d, _ts, _f = "0.01", _p, _kw, _n1, _ns, _przedzial = "5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna, czestotliwoscProbkowania;
+
+        //private string _wybranaFunkcja, iloscBitow = "0", iloscSasiadow;
+        //private string _A, _T, _t1 = "0", _d, _ts, _f = "0,01", _p, _kw, _n1, _ns, _przedzial = "5", _czyRzeczywista, _wartoscSrednia, _wartoscSredniaBezwzgledna, _mocSrednia, _wariacja, _wartoscSkuteczna, czestotliwoscProbkowania;
+
         private Visibility visibilityA = Visibility.Hidden, visibilityT = Visibility.Hidden, visibilityd = Visibility.Hidden, visibilityt1 = Visibility.Hidden, visibilityf = Visibility.Hidden, visibilitykw = Visibility.Hidden, visibilityts = Visibility.Hidden, visibilityn1 = Visibility.Hidden, visibilityns = Visibility.Hidden, visibilityczP = Visibility.Hidden, visibilityp = Visibility.Hidden;
         #endregion
 
@@ -77,6 +85,12 @@ namespace WpfApp1
         Funkcja funkcjaPoProbkowaniu;
 
         #region properties
+
+        //public string IloscSasiadow
+        //{
+        //    get { return iloscSasiadow; }
+        //    set { this.IloscSasiadow = value; }
+        //}
 
         public string IloscBitow
         {
@@ -487,16 +501,8 @@ namespace WpfApp1
          //   GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(test123, "kwantyzacja.txt");
             sw2 = plotProcess.StandardInput;
 
-            String testprobkowania = "set decimalsign locale\n" +
-                //  "set border linewidth 1.5 \n" +
-                "set style line 1 linecolor rgb '#0060ad' linetype 1 linewidth 2 \n" +
-                "set style line 2 linecolor rgb '#dd181f' linetype 1 linewidth 2 \n" +
-                "plot \"sinus.txt\" using 1:2 with lines linestyle 1, \"kwantyzacja.txt\" using 1:2 with lines linestyle 2 \n";// +
-               // "\"kwantyzacja.txt\" using 1:2 with lines linestyle 2"; 
-                
-
-            String gnuplot = "set decimalsign locale\n" +
-           "plot \"dyskretyzacja.txt\" using 1:2 ";
+                String gnuplot = "set decimalsign locale\n" +
+           "plot \"dyskretyzacja.txt\" using 1:2  ";
             sw2.WriteLine(gnuplot);
             sw2.Flush();
             // return new Funkcja(lista);
@@ -510,14 +516,20 @@ namespace WpfApp1
             openFileDialog.ShowDialog();
             string path = openFileDialog.SafeFileName;
             Funkcja funkcjaWczytanaZPliku = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
-            Funkcja temp = funkcjaWczytanaZPliku;
+            Funkcja temp = GeneratorSygnalow.WczytajZPlikuWlasciwosci(path);
             Kwantyzacja.listaY = temp.Punkty.Select(x => x.Y).ToList();
             double IloscPrzedzialowKwantyzacji = Math.Pow(2, (double.Parse(IloscBitow)));
             Kwantyzacja.ObliczCoIlePrzedzial((int)IloscPrzedzialowKwantyzacji);
             var s = Kwantyzacja.getCoIlePrzedzial();
-            Funkcja result = Kwantyzacja.KwantyzacjaRownomiernaZZaokragleniem(temp);
-            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(result, "kwantyzacja.txt");
+            Funkcja funkcjaPoKwantyzacji = Kwantyzacja.KwantyzacjaRownomiernaZZaokragleniem(temp);
+            GeneratorSygnalow.ZapiszDoPlikuWlasciwosci(funkcjaPoKwantyzacji, "kwantyzacja.txt");
             sw2 = plotProcess.StandardInput;
+
+            var qwr = funkcjaWczytanaZPliku;
+            MiaryPodobienstwa.WezFunkcje(funkcjaWczytanaZPliku, funkcjaPoKwantyzacji);
+            var xd = MiaryPodobienstwa.BladSredniokwadratowy();
+            var MD = MiaryPodobienstwa.MaksymalnaRoznica();
+
 
             String testprobkowania = "set decimalsign locale\n" +
                 //  "set border linewidth 1.5 \n" +
@@ -527,6 +539,11 @@ namespace WpfApp1
                                                                                                                                // "\"kwantyzacja.txt\" using 1:2 with lines linestyle 2"; 
             sw2.WriteLine(testprobkowania);
             sw2.Flush();
+        }
+
+        public void Rekonstrukcja()
+        {
+
         }
 
         public Funkcja StworzFunkcje(string name)

@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="470" d:DesignWidth="540">
     <Grid>
-        <Button Content="Próbkowanie równomierne" Command="{Binding ProbkowanieSygnalu}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,48,0,0" TextWrapping="Wrap" Text="{Binding CzestotliwoscProbkowania }" VerticalAlignment="Top" Width="145"/>
+        <Button Content="Próbkowanie równomierne" Command="{Binding ProbkowanieSygnalu}" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="147"/>
+        <TextBox HorizontalAlignment="Left" Height="23" Margin="10,48,0,0" TextWrapping="Wrap" Text="{Binding CzestotliwoscProbkowania }" VerticalAlignment="Top" Width="147"/>
         <Label Content="czestotliwość próbkowania" HorizontalAlignment="Left" Margin="160,48,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Height="24" Margin="11,124,0,0" TextWrapping="Wrap" Text="{Binding IloscBitow}" VerticalAlignment="Top" Width="146"/>
         <Label Content="ilość bitów" HorizontalAlignment="Left" Margin="169,124,0,0" VerticalAlignment="Top"/>
@@ -16,6 +16,6 @@
         <Label Content="Interpolacja I rzedu" HorizontalAlignment="Left" Margin="184,173,0,0" VerticalAlignment="Top"/>
         <Button Content="Interpolacja" Command="{Binding Interp}" HorizontalAlignment="Left" Margin="15,176,0,0" VerticalAlignment="Top" Width="145"/>
         <Label Content="Rekonstrukcja w oparciu o funkcje sinc" HorizontalAlignment="Left" Margin="184,216,0,0" VerticalAlignment="Top"/>
-        <Button Content="sinc" Command="{Binding sinc}" HorizontalAlignment="Left" Margin="15,219,0,0" VerticalAlignment="Top" Width="145"/>
+            <Button Content="sinc" Command="{Binding sinc}" HorizontalAlignment="Left" Margin="15,219,0,0" VerticalAlignment="Top" Width="145"/>
     </Grid>
 </UserControl>
